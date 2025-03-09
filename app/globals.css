@@ -5,4 +5,11 @@
   --font-cormorant: var(--font-cormorant-garamond);
   --color-dark: #14142b;
   --color-body: #fcf8f3;
+  --color-copper: #dd8560;
+  --color-gray-1000: #1e1e1e;
+  --color-neutral-550: #555555;
+}
+
+.btn-base {
+  @apply flex items-center justify-center bg-gray-1000 text-white py-2 w-full text-sm gap-[10px] active:bg-neutral-800 cursor-pointer;
 }
