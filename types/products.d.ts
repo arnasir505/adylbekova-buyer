@@ -15,3 +15,8 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ProductsResponse {
+  products: Product[];
+  totalPages: number;
+}

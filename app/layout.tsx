@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Tenor_Sans } from 'next/font/google';
 import ReduxProvider from '../providers/ReduxProvider';
 import './globals.css';
 import { Navbar } from '@/components/ui/navbar';
+import { Footer } from '@/components/ui/footer';
 
 const tenorSans = Tenor_Sans({
   variable: '--font-tenor-sans',
@@ -30,10 +31,13 @@ export default function RootLayout({
     <ReduxProvider>
       <html lang='en'>
         <body
-          className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased px-5 bg-body max-w-7xl mx-auto pb-5`}
+          className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-body pb-5`}
         >
-          <Navbar />
-          {children}
+          <main className='max-w-7xl mx-auto px-5'>
+            <Navbar />
+            {children}
+          </main>
+          <Footer />
         </body>
       </html>
     </ReduxProvider>
