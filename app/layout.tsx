@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Tenor_Sans } from 'next/font/google';
-import { Navbar } from './components';
-import ReduxProvider from './providers/ReduxProvider';
+import ReduxProvider from '../providers/ReduxProvider';
 import './globals.css';
+import { Navbar } from '@/components/ui/navbar';
 
 const tenorSans = Tenor_Sans({
   variable: '--font-tenor-sans',

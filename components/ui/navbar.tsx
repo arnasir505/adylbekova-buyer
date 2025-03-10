@@ -1,11 +1,11 @@
-import { Icon } from '@/app/iconpack';
-import { palette } from '@/app/shared/palette';
+import { Icon } from '@/iconpack';
+import { palette } from '@/lib/palette';
 import Link from 'next/link';
 
-export const Navbar = () => {
+const Navbar = () => {
   return (
     <nav className='flex items-center justify-between py-2 mt-3'>
-      <button className='cursor-pointer'>
+      <button className='cursor-pointer' aria-label='menu'>
         <Icon
           name='menu'
           size='md'
@@ -15,13 +15,13 @@ export const Navbar = () => {
         />
       </button>
       <Link
-        href='/'
+        href='/not-found'
         className='font-cormorant text-center text-xl min-[320px]:text-2xl uppercase leading-5'
       >
         Adylbekova <br /> Buyer
       </Link>
       <div className='space-x-4 md:space-x-6'>
-        <button className='cursor-pointer'>
+        <button className='cursor-pointer' aria-label='search'>
           <Icon
             name='search'
             size='md'
@@ -30,7 +30,7 @@ export const Navbar = () => {
             width={27}
           />
         </button>
-        <button className='cursor-pointer'>
+        <button className='cursor-pointer' aria-label='cart'>
           <Icon
             name='shoppingBag'
             size='md'
@@ -43,3 +43,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+export { Navbar };
