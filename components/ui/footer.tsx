@@ -1,7 +1,6 @@
 import { Icon } from '@/iconpack';
 import { palette } from '@/lib/palette';
 import Link from 'next/link';
-import React from 'react';
 
 const Footer = () => {
   return (

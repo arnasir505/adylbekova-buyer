@@ -52,6 +52,38 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+.AccordionTrigger[data-state='open'] > .AccordionChevron {
+  transform: rotate(90deg);
+}
+
+.AccordionContent {
+  overflow: hidden;
+}
+.AccordionContent[data-state='open'] {
+  animation: slideDown 300ms ease-out;
+}
+.AccordionContent[data-state='closed'] {
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
 .btn-base {
   @apply flex items-center justify-center bg-gray-1000 text-white py-2 w-full text-sm gap-[10px] active:bg-neutral-800 cursor-pointer;
 }
