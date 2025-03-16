@@ -83,7 +83,7 @@ const Navbar = () => {
         </SheetContent>
       </Sheet>
       <Link
-        href='/'
+        href='/products'
         className='font-cormorant text-center text-xl min-[320px]:text-2xl uppercase leading-5'
       >
         Adylbekova <br /> Buyer

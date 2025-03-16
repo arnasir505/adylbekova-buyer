@@ -15,7 +15,7 @@ import { ProductCard } from '@/components/ui/productCard';
 import { ProductCardSkeleton } from '@/components/ui/productCardSkeleton';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Home() {
+export default function Products() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -34,7 +34,7 @@ export default function Home() {
     return (
       <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 mt-12'>
         {[1, 2, 3, 4].map((key) => (
-          <ProductCardSkeleton key={key} variant='card'/>
+          <ProductCardSkeleton key={key} variant='card' />
         ))}
       </div>
     );

@@ -8,13 +8,13 @@ const Footer = () => {
       <div className='w-full mt-10 mb-4 py-[25px] bg-white'>
         <div className='max-w-[270px] mx-auto flex flex-col items-center'>
           <div className='flex justify-center gap-12'>
-            <Link href='/'>
+            <Link href='/products'>
               <Icon name='tiktok' size='lg' color={palette.neutral_333} />
             </Link>
-            <Link href='/'>
+            <Link href='/products'>
               <Icon name='instagram' size='lg' color={palette.neutral_333} />
             </Link>
-            <Link href='/'>
+            <Link href='/products'>
               <Icon name='facebook' size='lg' color={palette.neutral_333} />
             </Link>
           </div>
@@ -40,9 +40,9 @@ const Footer = () => {
             className='my-6'
           />
           <div className='flex justify-center gap-12'>
-            <Link href='/'>О нас</Link>
-            <Link href='/'>Контакты</Link>
-            <Link href='/'>Блог</Link>
+            <Link href='/products'>О нас</Link>
+            <Link href='/products'>Контакты</Link>
+            <Link href='/products'>Блог</Link>
           </div>
         </div>
       </div>
