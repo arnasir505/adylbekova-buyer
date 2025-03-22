@@ -64,7 +64,18 @@ const ProductDetails = () => {
         </li>
         <li>
           Цвета:{' '}
-          <span className='text-neutral-555'>{product?.colors.join(', ')}</span>
+          {product?.colors.map((color) => (
+            <div
+              className='text-neutral-555 pe-3 inline-flex items-center gap-2'
+              key={color._id}
+            >
+              <span>{color.name}</span>
+              <div
+                className='h-4 w-4 inline-block outline-2'
+                style={{ backgroundColor: color.hex }}
+              ></div>
+            </div>
+          ))}
         </li>
         <li>
           Размеры: <span className='text-neutral-555'>{product?.sizes}</span>

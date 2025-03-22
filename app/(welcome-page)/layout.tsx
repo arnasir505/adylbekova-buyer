@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Tenor_Sans } from 'next/font/google';
 import '@/app/globals.css';
-import ReduxProvider from '@/providers/ReduxProvider';
 
 const tenorSans = Tenor_Sans({
   variable: '--font-tenor-sans',
@@ -26,14 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReduxProvider>
-      <html lang='en'>
-        <body
-          className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-[#1B1A19]`}
-        >
-          <main className='max-w-7xl mx-auto relative'>{children}</main>
-        </body>
-      </html>
-    </ReduxProvider>
+    <html lang='en'>
+      <body
+        className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-[#1B1A19]`}
+      >
+        <main className='max-w-7xl mx-auto relative'>{children}</main>
+      </body>
+    </html>
   );
 }

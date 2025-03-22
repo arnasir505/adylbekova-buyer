@@ -43,15 +43,8 @@ export default function Products() {
   return (
     <>
       <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 mt-12'>
-        {data?.products?.map(({ _id, imagesUrl, name, price, description }) => (
-          <ProductCard
-            key={_id}
-            _id={_id}
-            imagesUrl={imagesUrl}
-            name={name}
-            price={price}
-            description={description}
-          />
+        {data?.products?.map((product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
       <Pagination className='mt-8 flex justify-center'>
