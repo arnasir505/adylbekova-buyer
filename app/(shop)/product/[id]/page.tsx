@@ -64,9 +64,9 @@ const ProductDetails = () => {
         </li>
         <li>
           Цвета:{' '}
-          {product?.colors.map((color) => (
+          {product?.colors.map((color, index) => (
             <div
-              className='text-neutral-555 pe-3 inline-flex items-center gap-2'
+              className='text-neutral-555 me-2 inline-flex items-center gap-2'
               key={color._id}
             >
               <span>{color.name}</span>
@@ -74,11 +74,15 @@ const ProductDetails = () => {
                 className='h-4 w-4 inline-block outline-2'
                 style={{ backgroundColor: color.hex }}
               ></div>
+              {index !== product.colors.length - 1 && <span>,</span>}
             </div>
           ))}
         </li>
         <li>
-          Размеры: <span className='text-neutral-555'>{product?.sizes}</span>
+          Размеры:{' '}
+          <span className='text-neutral-555'>
+            {product?.sizes.map((size) => size.value).join(', ')}
+          </span>
         </li>
       </ul>
       <h2 className='text-xl mt-9 mb-4'>Как оформить заказ?</h2>

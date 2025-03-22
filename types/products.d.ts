@@ -4,6 +4,11 @@ export interface Color {
   hex: string;
 }
 
+export interface Size {
+  _id: string;
+  value: string;
+}
+
 export interface Product {
   _id: string;
   brand: string;
@@ -14,7 +19,7 @@ export interface Product {
   discount: number;
   material: string;
   colors: Color[];
-  sizes: string;
+  sizes: Size[];
   imagesNames: string[];
   imagesUrl: string[];
   isAvailable: boolean;
