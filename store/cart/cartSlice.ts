@@ -1,4 +1,4 @@
-import { Product } from '@/types/products';
+import { Color, Product, Size } from '@/types/products';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { CartState } from '@/types/cart';
@@ -23,32 +23,56 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, { payload: product }: PayloadAction<Product>) => {
+    addToCart: (
+      state,
+      { payload }: PayloadAction<{ product: Product; size: Size; color: Color }>
+    ) => {
+      const { product, size, color } = payload;
       const foundItem = state.items.find(
-        (item) => item.product._id === product._id
+        (item) =>
+          item.product._id === product._id &&
+          item.size._id === size._id &&
+          item.color._id === color._id
       );
+
       if (foundItem) {
         foundItem.quantity++;
       } else {
-        state.items.push({ product, quantity: 1 });
+        state.items.push({ product, size, color, quantity: 1 });
       }
       calculateTotals(state);
     },
 
-    plusOneToCart: (state, { payload: product }: PayloadAction<Product>) => {
+    plusOneToCart: (
+      state,
+      { payload }: PayloadAction<{ product: Product; size: Size; color: Color }>
+    ) => {
+      const { product, size, color } = payload;
       const foundItem = state.items.find(
-        (item) => item.product._id === product._id
+        (item) =>
+          item.product._id === product._id &&
+          item.size._id === size._id &&
+          item.color._id === color._id
       );
+
       if (foundItem) {
         foundItem.quantity++;
       }
       calculateTotals(state);
     },
 
-    minusOneFromCart: (state, { payload: product }: PayloadAction<Product>) => {
+    minusOneFromCart: (
+      state,
+      { payload }: PayloadAction<{ product: Product; size: Size; color: Color }>
+    ) => {
+      const { product, size, color } = payload;
       const foundIndex = state.items.findIndex(
-        (item) => item.product._id === product._id
+        (item) =>
+          item.product._id === product._id &&
+          item.size._id === size._id &&
+          item.color._id === color._id
       );
+
       if (foundIndex !== -1) {
         state.items[foundIndex].quantity--;
         if (state.items[foundIndex].quantity === 0) {
@@ -58,9 +82,16 @@ const cartSlice = createSlice({
       calculateTotals(state);
     },
 
-    deleteFromCart: (state, { payload: product }: PayloadAction<Product>) => {
+    deleteFromCart: (
+      state,
+      { payload }: PayloadAction<{ product: Product; size: Size; color: Color }>
+    ) => {
+      const { product, size, color } = payload;
       state.items = state.items.filter(
-        (item) => item.product._id !== product._id
+        (item) =>
+          item.product._id !== product._id ||
+          item.size._id !== size._id ||
+          item.color._id !== color._id
       );
       calculateTotals(state);
     },

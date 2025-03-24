@@ -4,6 +4,7 @@ import { Navbar } from '@/components/ui/navbar';
 import { Footer } from '@/components/ui/footer';
 import ReduxProvider from '@/providers/ReduxProvider';
 import '@/app/globals.css';
+import { Toaster } from '@/components/ui/sonner';
 
 const tenorSans = Tenor_Sans({
   variable: '--font-tenor-sans',
@@ -37,6 +38,7 @@ export default function RootLayout({
             <Navbar />
             {children}
           </main>
+          <Toaster richColors position='top-center'/>
           <Footer />
         </body>
       </html>
