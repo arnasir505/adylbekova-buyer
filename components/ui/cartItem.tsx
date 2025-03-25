@@ -3,7 +3,13 @@ import Link from 'next/link';
 import { FC } from 'react';
 import Image from 'next/image';
 import { useAppDispatch } from '@/store';
-import { deleteFromCart } from '@/store/cart/cartSlice';
+import {
+  deleteFromCart,
+  inputToCart,
+  minusOneFromCart,
+  plusOneToCart,
+} from '@/store/cart/cartSlice';
+import { Minus, Plus } from 'lucide-react';
 
 interface Props {
   item: ICartItem;
@@ -11,6 +17,22 @@ interface Props {
 
 export const CartItem: FC<Props> = ({ item }) => {
   const dispatch = useAppDispatch();
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    item: ICartItem
+  ) => {
+    const { value: inputValue } = e.target;
+    const numericValue = Math.max(0, Number(inputValue.replace(/\D/g, '')));
+    dispatch(
+      inputToCart({
+        product: item.product,
+        size: item.size,
+        color: item.color,
+        quantity: numericValue,
+      })
+    );
+  };
   return (
     <div className='sm:flex sm:flex-row bg-white mb-3'>
       <div className='bg-product-bg h-full min-h-[150px] min-w-[150px] relative shrink-0'>
@@ -24,7 +46,7 @@ export const CartItem: FC<Props> = ({ item }) => {
           />
         )}
       </div>
-      <div className='p-2 overflow-auto'>
+      <div className='p-2 overflow-auto grow'>
         <Link href={`/product/${item.product._id}`}>
           <h2 className='text-lg uppercase mb-1 truncate'>
             {item.product.name}
@@ -38,8 +60,44 @@ export const CartItem: FC<Props> = ({ item }) => {
               style={{ backgroundColor: item.color.hex }}
             />
           </div>
-          , размер {item.size.value}, кол-во {item.quantity}
-          <div className='flex justify-end w-full'>
+          , размер {item.size.value}
+          <div className='flex items-center justify-between mt-3'>
+            <div className='flex'>
+              <button
+                className='cursor-pointer px-1 border hover:bg-neutral-300 transition-all'
+                onClick={() =>
+                  dispatch(
+                    minusOneFromCart({
+                      product: item.product,
+                      size: item.size,
+                      color: item.color,
+                    })
+                  )
+                }
+              >
+                <Minus size={16} />
+              </button>
+              <input
+                type='text'
+                value={item.quantity}
+                className='max-w-[40px] text-center border'
+                onChange={(e) => handleChange(e, item)}
+              />
+              <button
+                className='cursor-pointer px-1 border hover:bg-neutral-300 transition-all'
+                onClick={() =>
+                  dispatch(
+                    plusOneToCart({
+                      product: item.product,
+                      size: item.size,
+                      color: item.color,
+                    })
+                  )
+                }
+              >
+                <Plus size={16} />
+              </button>
+            </div>
             <button
               className='btn-base !w-auto px-3'
               onClick={() =>

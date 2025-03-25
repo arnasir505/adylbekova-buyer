@@ -61,6 +61,38 @@ const cartSlice = createSlice({
       calculateTotals(state);
     },
 
+    inputToCart: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        product: Product;
+        size: Size;
+        color: Color;
+        quantity: number;
+      }>
+    ) => {
+      const { product, size, color, quantity } = payload;
+      const foundItem = state.items.find(
+        (item) =>
+          item.product._id === product._id &&
+          item.size._id === size._id &&
+          item.color._id === color._id
+      );
+      if (foundItem) {
+        foundItem.quantity = quantity;
+        if (quantity === 0) {
+          state.items = state.items.filter(
+            (item) =>
+              item.product._id !== product._id ||
+              item.size._id !== size._id ||
+              item.color._id !== color._id
+          );
+        }
+        calculateTotals(state);
+      }
+    },
+
     minusOneFromCart: (
       state,
       { payload }: PayloadAction<{ product: Product; size: Size; color: Color }>
@@ -110,6 +142,7 @@ export const {
   plusOneToCart,
   deleteFromCart,
   clearCart,
+  inputToCart,
 } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;
