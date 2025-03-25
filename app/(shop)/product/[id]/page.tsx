@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/carousel';
 import { Icon } from '@/iconpack';
 import { ProductCardSkeleton } from '@/components/ui/productCardSkeleton';
+import { s3Loader } from '@/lib/utils';
 
 const ProductDetails = () => {
   const router = useRouter();
@@ -41,6 +42,7 @@ const ProductDetails = () => {
               <CarouselItem key={imgUrl}>
                 <div className='h-[333px] w-full bg-product-bg'>
                   <Image
+                    loader={s3Loader}
                     src={imgUrl}
                     alt={product.name}
                     width={362}

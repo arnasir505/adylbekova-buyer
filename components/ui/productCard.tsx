@@ -46,7 +46,7 @@ const ProductCard: FC<Props> = ({ product }) => {
         setSelectedColor(null);
         setIsOpen(false);
         setLoading(false);
-        toast.success('Добавлено в корзину')
+        toast.success('Добавлено в корзину', {duration: 2000})
       }, 500);
     }
   }, [selectedSize, selectedColor, dispatch, product]);

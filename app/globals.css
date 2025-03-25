@@ -51,20 +51,30 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --animate-slideUp: slideUp 300ms ease-out;
+  --animate-slideDown: slideDown 300ms ease-out;
+
+  @keyframes slideDown {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
 .AccordionTrigger[data-state='open'] > .AccordionChevron {
   transform: rotate(90deg);
-}
-
-.AccordionContent {
-  overflow: hidden;
-}
-.AccordionContent[data-state='open'] {
-  animation: slideDown 300ms ease-out;
-}
-.AccordionContent[data-state='closed'] {
-  animation: slideUp 300ms ease-out;
 }
 
 .bg-welcome-1 {
@@ -103,6 +113,21 @@
   background-repeat: no-repeat;
 }
 
+.cart-has-items {
+  position: relative;
+}
+
+.cart-has-items::after {
+  content: '';
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: var(--color-bleached-orange);
+  right: 1px;
+  top: 1px;
+}
+
 .btn-base {
   @apply flex items-center justify-center bg-gray-1000 text-white py-2 w-full text-sm gap-[10px] active:bg-neutral-800 cursor-pointer;
 }
@@ -113,24 +138,6 @@
 
 .btn-base-light {
   @apply flex items-center justify-center bg-white text-black py-4 w-full text-xl gap-[8px] active:bg-neutral-200 cursor-pointer rounded;
-}
-
-@keyframes slideDown {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-  to {
-    height: 0;
-  }
 }
 
 :root {

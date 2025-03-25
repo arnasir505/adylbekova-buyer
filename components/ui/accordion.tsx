@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { ComponentProps } from 'react';
 import {
   Content,
@@ -9,6 +8,7 @@ import {
   Root,
   Trigger,
 } from '@radix-ui/react-accordion';
+import { cn } from '@/lib/utils';
 
 function Accordion({ ...props }: ComponentProps<typeof Root>) {
   return <Root data-slot='accordion' {...props} />;
@@ -40,9 +40,13 @@ function AccordionContent({
   return (
     <Content
       data-slot='accordion-content'
+      className={cn(
+        'data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden',
+        className
+      )}
       {...props}
     >
-      <div className={cn('pt-0 pb-4', className)}>{children}</div>
+      {children}
     </Content>
   );
 }
