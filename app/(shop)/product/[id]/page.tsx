@@ -3,7 +3,7 @@
 import { useGetProductByIdQuery } from '@/store/api';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { ChevronLeftIcon } from 'lucide-react';
+import { ChevronLeftIcon, Loader2 } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -14,8 +14,27 @@ import {
 import { Icon } from '@/iconpack';
 import { ProductCardSkeleton } from '@/components/ui/productCardSkeleton';
 import { s3Loader } from '@/lib/utils';
+import { useAppDispatch } from '@/store';
+import { useEffect, useState } from 'react';
+import { Color, Size } from '@/types/products';
+import { addToCart } from '@/store/cart/cartSlice';
+import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const ProductDetails = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams();
   const {
@@ -23,6 +42,28 @@ const ProductDetails = () => {
     error,
     isLoading,
   } = useGetProductByIdQuery(id as string);
+
+  const [selectedSize, setSelectedSize] = useState<Size | null>(null);
+  const [selectedColor, setSelectedColor] = useState<Color | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (product && selectedSize && selectedColor) {
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(
+          addToCart({ product, size: selectedSize, color: selectedColor })
+        );
+
+        setSelectedSize(null);
+        setSelectedColor(null);
+        setIsOpen(false);
+        setLoading(false);
+        toast.success('Добавлено в корзину', { duration: 2000 });
+      }, 500);
+    }
+  }, [selectedSize, selectedColor, dispatch, product]);
 
   if (isLoading) return <ProductCardSkeleton variant='full' />;
   if (error) return <p className='text-center mt-12'>Ошибка загрузки</p>;
@@ -89,10 +130,60 @@ const ProductDetails = () => {
       </ul>
       <h2 className='text-xl mt-9 mb-4'>Как оформить заказ?</h2>
       <div className='max-w-sm'>
-        <button className='btn-base-lg'>
-          В корзину{' '}
-          <Icon name='cart' size='md' height={28} width={28} color='white' />
-        </button>
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+          <DropdownMenuTrigger className='btn-base-lg' disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className='animate-spin' />
+              </>
+            ) : (
+              <>
+                В корзину{' '}
+                <Icon
+                  name='cart'
+                  size='md'
+                  height={28}
+                  width={28}
+                  color='white'
+                />
+              </>
+            )}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Выберите размер:</DropdownMenuLabel>
+            <Select
+              value={selectedSize ? JSON.stringify(selectedSize) : ''}
+              onValueChange={(value) => setSelectedSize(JSON.parse(value))}
+            >
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='Размер' />
+              </SelectTrigger>
+              <SelectContent>
+                {product?.sizes.map((size) => (
+                  <SelectItem value={JSON.stringify(size)} key={size._id}>
+                    {size.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <DropdownMenuLabel>Выберите цвет:</DropdownMenuLabel>
+            <Select
+              value={selectedColor ? JSON.stringify(selectedColor) : ''}
+              onValueChange={(value) => setSelectedColor(JSON.parse(value))}
+            >
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='Цвет' />
+              </SelectTrigger>
+              <SelectContent>
+                {product?.colors.map((color) => (
+                  <SelectItem value={JSON.stringify(color)} key={color._id}>
+                    {color.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
