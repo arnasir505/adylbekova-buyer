@@ -46,7 +46,7 @@ const ProductCard: FC<Props> = ({ product }) => {
         setSelectedColor(null);
         setIsOpen(false);
         setLoading(false);
-        toast.success('Добавлено в корзину', {duration: 2000})
+        toast.success('Добавлено в корзину', { duration: 2000 });
       }, 500);
     }
   }, [selectedSize, selectedColor, dispatch, product]);
@@ -65,7 +65,14 @@ const ProductCard: FC<Props> = ({ product }) => {
             />
           )}
         </div>
-        <p className='text-copper text-base leading-7'>${product.price}</p>
+        <p className='text-copper text-base leading-7'>
+          ${product.price - (product.discount ?? 0)}
+          {product.discount && (
+            <span className='text-neutral-400 ms-2 line-through decoration-1'>
+              ${product.price}
+            </span>
+          )}
+        </p>
         <h2 className='uppercase truncate'>{product.name}</h2>
         <p className='text-sm leading-5 truncate text-neutral-555 mb-2'>
           {product.description}

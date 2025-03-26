@@ -10,13 +10,16 @@ import {
   plusOneToCart,
 } from '@/store/cart/cartSlice';
 import { Minus, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Props {
   item: ICartItem;
+  variant?: 'lg';
 }
 
-export const CartItem: FC<Props> = ({ item }) => {
+export const CartItem: FC<Props> = ({ item, variant }) => {
   const dispatch = useAppDispatch();
+  const isLarge = variant === 'lg';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -34,8 +37,18 @@ export const CartItem: FC<Props> = ({ item }) => {
     );
   };
   return (
-    <div className='sm:flex sm:flex-row bg-white mb-3'>
-      <div className='bg-product-bg h-full min-h-[150px] min-w-[150px] relative shrink-0'>
+    <div
+      className={cn(
+        'sm:flex sm:flex-row bg-white mb-3',
+        isLarge && 'mb-5 min-[500px]:flex min-[500px]:flex-row'
+      )}
+    >
+      <div
+        className={cn(
+          'bg-product-bg h-full min-h-[150px] min-w-[150px] relative shrink-0',
+          isLarge && 'w-[204px] h-[250px]'
+        )}
+      >
         {item.product.imagesUrl[0] && (
           <Image
             src={item.product.imagesUrl[0]}
@@ -46,13 +59,16 @@ export const CartItem: FC<Props> = ({ item }) => {
           />
         )}
       </div>
-      <div className='p-2 overflow-auto grow'>
+      <div className={cn('p-2 overflow-auto grow', isLarge && 'p-4')}>
         <Link href={`/product/${item.product._id}`}>
-          <h2 className='text-lg uppercase mb-1 truncate'>
-            {item.product.name}
-          </h2>
+          <h2 className='text-lg uppercase mb-1'>{item.product.name}</h2>
         </Link>
         <div>
+          {isLarge && (
+            <p className='text-sm leading-5 text-neutral-555 mb-2'>
+              {item.product.description}
+            </p>
+          )}
           <div className='me-2 inline-flex items-center gap-2'>
             <span>цвет {item.color.name}</span>
             <div
@@ -61,6 +77,16 @@ export const CartItem: FC<Props> = ({ item }) => {
             />
           </div>
           , размер {item.size.value}
+          {isLarge && (
+            <p className='text-copper text-base mt-1 lg:text-xl'>
+              ${item.product.price - (item.product.discount ?? 0)}
+              {item.product.discount && (
+                <span className='text-neutral-400 ms-2 line-through decoration-1'>
+                  ${item.product.price}
+                </span>
+              )}
+            </p>
+          )}
           <div className='flex items-center justify-between mt-3'>
             <div className='flex'>
               <button

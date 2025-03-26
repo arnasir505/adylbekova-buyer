@@ -11,4 +11,6 @@ export interface CartState {
   items: CartItem[];
   totalPrice: number;
   totalItems: number;
+  totalOriginalPrice: number;
+  totalDiscount: number;
 }

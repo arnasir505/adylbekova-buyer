@@ -7,15 +7,21 @@ const initialState: CartState = {
   items: [],
   totalPrice: 0,
   totalItems: 0,
+  totalOriginalPrice: 0,
+  totalDiscount: 0,
 };
 
 const calculateTotals = (state: CartState) => {
-  state.totalPrice = state.items.reduce((acc, cur) => {
-    const discount = cur.product.discount || 0;
-    const finalPrice = Math.max(cur.product.price - discount, 0);
-    return acc + finalPrice * cur.quantity;
-  }, 0);
+  state.totalOriginalPrice = state.items.reduce(
+    (acc, cur) => acc + cur.product.price * cur.quantity,
+    0
+  );
+  state.totalDiscount = state.items.reduce(
+    (acc, cur) => acc + (cur.product.discount ?? 0) * cur.quantity,
+    0
+  );
 
+  state.totalPrice = state.totalOriginalPrice - state.totalDiscount;
   state.totalItems = state.items.reduce((acc, cur) => acc + cur.quantity, 0);
 };
 
@@ -132,6 +138,8 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       state.totalPrice = 0;
+      state.totalOriginalPrice = 0;
+      state.totalDiscount = 0;
     },
   },
 });
@@ -151,3 +159,7 @@ export const selectCartItems = (state: RootState) => state.cart.items;
 export const selectCartItemsTotalPrice = (state: RootState) =>
   state.cart.totalPrice;
 export const selectCartItemsTotal = (state: RootState) => state.cart.totalItems;
+export const selectCartItemsTotalOriginalPrice = (state: RootState) =>
+  state.cart.totalOriginalPrice;
+export const selectCartItemsTotalDiscount = (state: RootState) =>
+  state.cart.totalDiscount;

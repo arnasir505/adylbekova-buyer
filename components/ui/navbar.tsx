@@ -6,7 +6,7 @@ import { Menu } from './menu';
 
 const Navbar = () => {
   return (
-    <nav className='flex items-center justify-between py-2 mt-3'>
+    <nav className='flex items-center justify-between py-4 sticky top-0 z-50 bg-body'>
       <Menu />
       <Link
         href='/products'

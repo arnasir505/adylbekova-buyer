@@ -34,7 +34,7 @@ export default function RootLayout({
         <body
           className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-body pb-5`}
         >
-          <main className='max-w-7xl mx-auto px-5'>
+          <main className='max-w-6xl mx-auto px-5'>
             <Navbar />
             {children}
           </main>

@@ -16,7 +16,7 @@ export interface Product {
   category: string;
   description: string;
   price: number;
-  discount: number;
+  discount?: number;
   material: string;
   colors: Color[];
   sizes: Size[];
