@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='ru'>
       <body
         className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-[#1B1A19]`}
       >

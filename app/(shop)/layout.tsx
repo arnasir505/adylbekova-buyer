@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <ReduxProvider>
-      <html lang='en'>
+      <html lang='ru'>
         <body
           className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-body pb-5`}
         >
