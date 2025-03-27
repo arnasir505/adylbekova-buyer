@@ -6,6 +6,7 @@ import Steps from '@/components/ui/steps';
 import { Icon } from '@/iconpack';
 import { palette } from '@/lib/palette';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 export default function WelcomePage() {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean | null>(null);
@@ -167,8 +168,13 @@ export default function WelcomePage() {
             </div>
           </div>
           <div className='max-w-[357px]'>
-            <button className='btn-base-light' onClick={nextStep}>
-              <span>Перейти к покупкам</span>
+            <Button
+              className='w-full rounded text-xl'
+              size='xl'
+              variant='white'
+              onClick={nextStep}
+            >
+              Перейти к покупкам
               <Icon
                 name='arrowUpRight'
                 size='sm'
@@ -176,7 +182,7 @@ export default function WelcomePage() {
                 width={18}
                 color={palette.black}
               />
-            </button>
+            </Button>
           </div>
         </div>
         <Steps totalSteps={totalSteps} currentStep={step} />

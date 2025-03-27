@@ -11,6 +11,7 @@ import {
 } from '@/store/cart/cartSlice';
 import { Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from './button';
 
 interface Props {
   item: ICartItem;
@@ -87,7 +88,7 @@ export const CartItem: FC<Props> = ({ item, variant }) => {
               )}
             </p>
           )}
-          <div className='flex items-center justify-between mt-3'>
+          <div className='flex items-center justify-between mt-3 flex-wrap gap-4'>
             <div className='flex'>
               <button
                 className='cursor-pointer px-1 border hover:bg-neutral-300 transition-all'
@@ -124,8 +125,8 @@ export const CartItem: FC<Props> = ({ item, variant }) => {
                 <Plus size={16} />
               </button>
             </div>
-            <button
-              className='btn-base !w-auto px-3'
+            <Button
+              size='sm'
               onClick={() =>
                 dispatch(
                   deleteFromCart({
@@ -137,7 +138,7 @@ export const CartItem: FC<Props> = ({ item, variant }) => {
               }
             >
               Удалить
-            </button>
+            </Button>
           </div>
         </div>
       </div>

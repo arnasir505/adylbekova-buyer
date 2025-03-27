@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { CartItem } from '@/components/ui/cartItem';
 import { useAppSelector } from '@/store';
 import {
@@ -9,6 +10,7 @@ import {
   selectCartItemsTotalOriginalPrice,
   selectCartItemsTotalPrice,
 } from '@/store/cart/cartSlice';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const Cart = () => {
@@ -25,8 +27,8 @@ const Cart = () => {
   }, [cart.length]);
 
   return (
-    <div>
-      <h1 className='text-2xl sm:text-4xl mt-2'>Корзина</h1>
+    <>
+      <h1 className='text-2xl md:text-4xl mt-2'>Корзина</h1>
       <div className='flex flex-wrap lg:flex-nowrap gap-4 mt-5 md:flex-row'>
         <div className='w-full'>
           {cartHasItems &&
@@ -60,12 +62,14 @@ const Cart = () => {
                 <span className='font-semibold'>К оплате:</span>
                 <span className='text-2xl font-semibold'>{totalPrice} USD</span>
               </div>
-              <button className='btn-base !py-3'>Оформить заказ</button>
+              <Button className='w-full' size='lg' asChild>
+                <Link href='/checkout'>Оформить заказ</Link>
+              </Button>
             </div>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

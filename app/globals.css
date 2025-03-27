@@ -128,18 +128,6 @@
   top: 1px;
 }
 
-.btn-base {
-  @apply flex items-center justify-center bg-gray-1000 text-white py-2 w-full text-sm gap-[10px] active:bg-neutral-800 cursor-pointer;
-}
-
-.btn-base-lg {
-  @apply flex items-center justify-center bg-gray-1000 text-white py-4 w-full text-lg gap-[10px] active:bg-neutral-800 cursor-pointer;
-}
-
-.btn-base-light {
-  @apply flex items-center justify-center bg-white text-black py-4 w-full text-xl gap-[8px] active:bg-neutral-200 cursor-pointer rounded;
-}
-
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

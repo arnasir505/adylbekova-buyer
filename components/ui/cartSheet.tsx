@@ -19,6 +19,7 @@ import { CartItem } from './cartItem';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Button } from './button';
 
 export const CartSheet = () => {
   const cart = useAppSelector(selectCartItems);
@@ -63,9 +64,9 @@ export const CartSheet = () => {
           <p className='uppercase pt-1'>Товаров в корзине: {totalItems}</p>
           <p className='uppercase pt-1'>Общая сумма: ${totalPrice}</p>
           {cartHasItems && (
-            <Link href='/cart' className='btn-base-lg mt-4'>
-              Перейти в корзину
-            </Link>
+            <Button className='w-full mt-4' size='xl' asChild>
+              <Link href='/cart'>Перейти в корзину</Link>
+            </Button>
           )}
         </div>
       </SheetContent>

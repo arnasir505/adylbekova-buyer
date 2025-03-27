@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
 const ProductDetails = () => {
   const dispatch = useAppDispatch();
@@ -131,23 +132,25 @@ const ProductDetails = () => {
       <h2 className='text-xl mt-9 mb-4'>Как оформить заказ?</h2>
       <div className='max-w-sm'>
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-          <DropdownMenuTrigger className='btn-base-lg' disabled={loading}>
-            {loading ? (
-              <>
-                <Loader2 className='animate-spin' />
-              </>
-            ) : (
-              <>
-                В корзину{' '}
-                <Icon
-                  name='cart'
-                  size='md'
-                  height={28}
-                  width={28}
-                  color='white'
-                />
-              </>
-            )}
+          <DropdownMenuTrigger disabled={loading} asChild>
+            <Button className='w-full' size='xl'>
+              {loading ? (
+                <>
+                  <Loader2 className='animate-spin' />
+                </>
+              ) : (
+                <>
+                  В корзину{' '}
+                  <Icon
+                    name='cart'
+                    size='md'
+                    height={28}
+                    width={28}
+                    color='white'
+                  />
+                </>
+              )}
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Выберите размер:</DropdownMenuLabel>

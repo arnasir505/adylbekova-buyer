@@ -21,6 +21,7 @@ import {
 } from './select';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from './button';
 
 interface Props {
   product: Product;
@@ -79,16 +80,18 @@ const ProductCard: FC<Props> = ({ product }) => {
         </p>
       </Link>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger className='btn-base' disabled={loading}>
-          {loading ? (
-            <>
-              <Loader2 className='animate-spin' />
-            </>
-          ) : (
-            <>
-              В корзину <Icon name='cart' size='md' color='white' />
-            </>
-          )}
+        <DropdownMenuTrigger asChild disabled={loading}>
+          <Button className='w-full'>
+            {loading ? (
+              <>
+                <Loader2 className='animate-spin' />
+              </>
+            ) : (
+              <>
+                В корзину <Icon name='cart' size='md' color='white' />
+              </>
+            )}
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>Выберите размер:</DropdownMenuLabel>
