@@ -46,8 +46,6 @@ const Checkout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -158,12 +156,7 @@ const Checkout = () => {
             </form>
           </Form>
         </div>
-        <div className='bg-red-300'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, error.
-          Eum accusantium magni explicabo quasi, voluptatem quisquam consequatur
-          perspiciatis dolorem voluptate ullam ex minima rem quaerat in, illum
-          deserunt vero?
-        </div>
+
       </div>
     </>
   );

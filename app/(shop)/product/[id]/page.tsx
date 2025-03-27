@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const ProductDetails = () => {
   const dispatch = useAppDispatch();
@@ -129,7 +130,11 @@ const ProductDetails = () => {
           </span>
         </li>
       </ul>
-      <h2 className='text-xl mt-9 mb-4'>Как оформить заказ?</h2>
+      <h2 className='text-xl mt-9 mb-4'>
+        <Link href='/how-to-order' className='hover:underline decoration-1'>
+          Как оформить заказ?
+        </Link>
+      </h2>
       <div className='max-w-sm'>
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger disabled={loading} asChild>

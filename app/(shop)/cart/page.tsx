@@ -29,7 +29,7 @@ const Cart = () => {
   return (
     <>
       <h1 className='text-2xl md:text-4xl mt-2'>Корзина</h1>
-      <div className='flex flex-wrap lg:flex-nowrap gap-4 mt-5 md:flex-row'>
+      <div className='flex flex-wrap lg:flex-nowrap gap-5 mt-5 md:flex-row'>
         <div className='w-full'>
           {cartHasItems &&
             cart.map((item) => (
