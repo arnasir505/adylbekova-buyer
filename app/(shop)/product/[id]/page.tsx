@@ -16,7 +16,6 @@ import { ProductCardSkeleton } from '@/components/ui/productCardSkeleton';
 import { s3Loader } from '@/lib/utils';
 import { useAppDispatch } from '@/store';
 import { useEffect, useState } from 'react';
-import { Color, Size } from '@/types/products';
 import { addToCart } from '@/store/cart/cartSlice';
 import { toast } from 'sonner';
 import {
@@ -34,6 +33,8 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Size } from '@/types/sizes';
+import { Color } from '@/types/colors';
 
 const ProductDetails = () => {
   const dispatch = useAppDispatch();

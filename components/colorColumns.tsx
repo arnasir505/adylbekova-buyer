@@ -5,42 +5,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Brand } from '@/types/brands';
+import { Color } from '@/types/colors';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import Image from 'next/image';
 
-export const brandColumns: ColumnDef<Brand>[] = [
+export const colorColumns: ColumnDef<Color>[] = [
   {
-    accessorKey: 'imageUrl',
-    header: '',
-    cell: ({ row }) => {
-      return (
-        row.original.imageUrl && (
-          <div className='h-[100px] w-[100px] relative mx-2'>
-            <Image
-              src={row.original.imageUrl}
-              alt={row.original.name}
-              className='object-cover rounded-md'
-              fill
-              sizes='(max-width: 400px) 100vw, (max-width: 640px) 50vw, 33vw'
-            />
-          </div>
-        )
-      );
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
+    accessorKey: 'value',
     header: 'Название',
-    cell: ({ row }) => <div>{row.original.name}</div>,
-  },
-  {
-    accessorKey: 'description',
-    header: 'Описание',
-    cell: ({ row }) => <div>{row.original.description}</div>,
+    cell: ({ row }) => (
+      <div className='me-2 inline-flex items-center gap-2'>
+        <span>{row.original.name}</span>
+        <div
+          className='h-4 w-4 inline-block outline-2'
+          style={{ backgroundColor: row.original.hex }}
+        />
+      </div>
+    ),
   },
   {
     accessorKey: 'createdAt',

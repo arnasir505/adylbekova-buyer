@@ -5,42 +5,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Brand } from '@/types/brands';
+import { Size } from '@/types/sizes';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import Image from 'next/image';
 
-export const brandColumns: ColumnDef<Brand>[] = [
+export const sizeColumns: ColumnDef<Size>[] = [
   {
-    accessorKey: 'imageUrl',
-    header: '',
-    cell: ({ row }) => {
-      return (
-        row.original.imageUrl && (
-          <div className='h-[100px] w-[100px] relative mx-2'>
-            <Image
-              src={row.original.imageUrl}
-              alt={row.original.name}
-              className='object-cover rounded-md'
-              fill
-              sizes='(max-width: 400px) 100vw, (max-width: 640px) 50vw, 33vw'
-            />
-          </div>
-        )
-      );
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
-    header: 'Название',
-    cell: ({ row }) => <div>{row.original.name}</div>,
-  },
-  {
-    accessorKey: 'description',
-    header: 'Описание',
-    cell: ({ row }) => <div>{row.original.description}</div>,
+    accessorKey: 'value',
+    header: 'Размер',
+    cell: ({ row }) => <div>{row.original.value}</div>,
   },
   {
     accessorKey: 'createdAt',

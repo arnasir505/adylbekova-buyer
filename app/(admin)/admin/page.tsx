@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProductsTable from '@/components/product-table';
+import BrandsTable from '@/components/brand-table';
+import CategoriesTable from '@/components/category-table';
+import SizesTable from '@/components/size-table';
+import ColorsTable from '@/components/color-table';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -29,25 +33,7 @@ const Dashboard = () => {
     }
   }, [user, router]);
 
-  if (!user) return <div>Загрузка...</div>;
-
-  // const productsTable = useReactTable({
-  //   data: productsData?.products || [],
-  //   columns: productColumns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // });
-
-  // const brandsTable = useReactTable({
-  //   data: brandsData || [],
-  //   columns: brandColumns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // });
-
-  // const categoriesTable = useReactTable({
-  //   data: categoriesData || [],
-  //   columns: categoryColumns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // });
+  if (!user) return <div className='text-center py-10'>Загрузка...</div>;
 
   return (
     <SidebarProvider>
@@ -55,7 +41,7 @@ const Dashboard = () => {
       <SidebarInset>
         <SiteHeader />
         <div className='flex flex-1 flex-col'>
-          <div className='p-4'>
+          <div className='@container/main p-4'>
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
@@ -70,24 +56,34 @@ const Dashboard = () => {
                     <SelectItem value='products'>Товары</SelectItem>
                     <SelectItem value='brands'>Бренды</SelectItem>
                     <SelectItem value='categories'>Категории</SelectItem>
+                    <SelectItem value='sizes'>Размеры</SelectItem>
+                    <SelectItem value='colors'>Цвета</SelectItem>
                   </SelectContent>
                 </Select>
                 <TabsList className='hidden @4xl/main:flex gap-1'>
                   <TabsTrigger value='products'>Товары</TabsTrigger>
                   <TabsTrigger value='brands'>Бренды</TabsTrigger>
                   <TabsTrigger value='categories'>Категории</TabsTrigger>
+                  <TabsTrigger value='sizes'>Размеры</TabsTrigger>
+                  <TabsTrigger value='colors'>Цвета</TabsTrigger>
                 </TabsList>
               </div>
 
               <TabsContent value='products'>
                 {activeTab === 'products' && <ProductsTable />}
               </TabsContent>
-              {/* <TabsContent value='brands'>
-              {activeTab === 'brands' && <BrandsTable />}
-            </TabsContent>
-            <TabsContent value='categories'>
-              {activeTab === 'categories' && <CategoriesTable />}
-            </TabsContent> */}
+              <TabsContent value='brands'>
+                {activeTab === 'brands' && <BrandsTable />}
+              </TabsContent>
+              <TabsContent value='categories'>
+                {activeTab === 'categories' && <CategoriesTable />}
+              </TabsContent>
+              <TabsContent value='sizes'>
+                {activeTab === 'sizes' && <SizesTable />}
+              </TabsContent>
+              <TabsContent value='colors'>
+                {activeTab === 'colors' && <ColorsTable />}
+              </TabsContent>
             </Tabs>
           </div>
         </div>

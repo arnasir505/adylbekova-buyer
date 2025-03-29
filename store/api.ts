@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '../lib/constants';
-import { Brand, Category, Product, ProductsResponse } from '@/types/products';
+import { Product, ProductsResponse } from '@/types/products';
 import { LoginResponse } from '@/types/user';
+import { BrandResponse } from '@/types/brands';
+import { CategoryResponse } from '@/types/categories';
+import { SizeResponse } from '@/types/sizes';
+import { ColorResponse } from '@/types/colors';
 
 export const api = createApi({
   reducerPath: 'api',
@@ -9,9 +13,14 @@ export const api = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<
       ProductsResponse,
-      { page: number; limit: number }
+      { page?: number; limit?: number }
     >({
-      query: ({ page, limit }) => `/products?page=${page}&limit=${limit}`,
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/products?${params.toString()}`;
+      },
       transformResponse: (response: ProductsResponse) => ({
         products: response.products,
         totalPages: response.totalPages,
@@ -20,8 +29,57 @@ export const api = createApi({
     getProductById: builder.query<Product, string>({
       query: (id) => `/products/${id}`,
     }),
-    getBrands: builder.query<Brand[], void>({ query: () => '/brands' }),
-    getCategories: builder.query<Category[], void>({ query: () => '/categories' }),
+    getBrands: builder.query<BrandResponse, { page?: number; limit?: number }>({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/brands?${params.toString()}`;
+      },
+      transformResponse: (response: BrandResponse) => ({
+        brands: response.brands,
+        totalPages: response.totalPages,
+      }),
+    }),
+    getCategories: builder.query<
+      CategoryResponse,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/categories?${params.toString()}`;
+      },
+      transformResponse: (response: CategoryResponse) => ({
+        categories: response.categories,
+        totalPages: response.totalPages,
+      }),
+    }),
+    getSizes: builder.query<SizeResponse, { page?: number; limit?: number }>({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/sizes?${params.toString()}`;
+      },
+      transformResponse: (response: SizeResponse) => ({
+        sizes: response.sizes,
+        totalPages: response.totalPages,
+      }),
+    }),
+    getColors: builder.query<ColorResponse, { page?: number; limit?: number }>({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/colors?${params.toString()}`;
+      },
+      transformResponse: (response: ColorResponse) => ({
+        colors: response.colors,
+        totalPages: response.totalPages,
+      }),
+    }),
     login: builder.mutation<LoginResponse, { email: string; password: string }>(
       {
         query: (credentials) => ({
@@ -53,4 +111,6 @@ export const {
   useLoginMutation,
   useGetBrandsQuery,
   useGetCategoriesQuery,
+  useGetSizesQuery,
+  useGetColorsQuery,
 } = api;

@@ -1,22 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { useGetProductsQuery } from '@/store/api';
+import { useGetColorsQuery } from '@/store/api';
 import {
   useReactTable,
   getCoreRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import { productColumns } from './productColumns';
 import DataTable from '@/components/data-table';
+import { colorColumns } from './colorColumns';
 
-const ProductsTable = () => {
+const ColorsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: productsData, isLoading } = useGetProductsQuery({});
+  const { data: colorData, isLoading } = useGetColorsQuery({});
 
   const table = useReactTable({
-    data: productsData?.products || [],
-    columns: productColumns,
+    data: colorData?.colors || [],
+    columns: colorColumns,
     state: { pagination },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -24,10 +24,10 @@ const ProductsTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка товаров...</div>
+    <div>Загрузка цветов...</div>
   ) : (
-    <DataTable table={table} columns={productColumns} />
+    <DataTable table={table} columns={colorColumns} />
   );
 };
 
-export default ProductsTable;
+export default ColorsTable;

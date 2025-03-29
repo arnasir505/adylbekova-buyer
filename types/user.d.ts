@@ -4,6 +4,8 @@ export interface User {
   name: string;
   phone: string;
   role: 'admin' | 'manager';
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginResponse {

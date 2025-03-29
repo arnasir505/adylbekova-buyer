@@ -1,30 +1,7 @@
-export interface Color {
-  _id: string;
-  name: string;
-  hex: string;
-}
-
-export interface Size {
-  _id: string;
-  value: string;
-}
-
-export interface Brand {
-  _id: string;
-  name: string;
-  imageName: string | null;
-  imageUrl: string | null;
-  description: string;
-  createdAt: string;
-}
-
-export interface Category {
-  _id: string;
-  name: string;
-  label: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Brand } from '@/types/brands';
+import { Category } from '@/types/categories';
+import { Color } from '@/types/colors';
+import { Size } from '@/types/sizes';
 
 export interface Product {
   _id: string;

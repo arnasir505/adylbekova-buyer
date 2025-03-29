@@ -5,7 +5,7 @@ import { Icon } from '@/iconpack';
 import Link from 'next/link';
 import { useAppDispatch } from '@/store';
 import { addToCart } from '@/store/cart/cartSlice';
-import { Color, Product, Size } from '@/types/products';
+import { Product} from '@/types/products';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +22,8 @@ import {
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './button';
+import { Size } from '@/types/sizes';
+import { Color } from '@/types/colors';
 
 interface Props {
   product: Product;

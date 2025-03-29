@@ -5,21 +5,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Category } from '@/types/products';
+import { Category } from '@/types/categories';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 
 export const categoryColumns: ColumnDef<Category>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'label',
     header: 'Название',
-    cell: ({ row }) => <div>{row.original.name}</div>,
+    cell: ({ row }) => <div>{row.original.label}</div>,
   },
   {
-    accessorKey: 'label',
+    accessorKey: 'name',
     header: 'Название на английском',
-    cell: ({ row }) => <div>{row.original.label}</div>,
+    cell: ({ row }) => <div>{row.original.name}</div>,
   },
   {
     accessorKey: 'createdAt',

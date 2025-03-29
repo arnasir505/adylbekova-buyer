@@ -61,7 +61,7 @@ const DataTable = <TData,>({ table, columns }: DataTableProps<TData>) => {
         </TableBody>
       </Table>
 
-      <div className='flex justify-between items-center p-4 border-t'>
+      <div className='flex justify-end gap-3 items-center p-4 border-t'>
         <Button
           variant='outline'
           disabled={!table.getCanPreviousPage()}
