@@ -150,7 +150,7 @@ const Checkout = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' size='lg' className='w-full'>
+              <Button type='submit' size='lg' className='w-full rounded-md'>
                 Подтвердить заказ
               </Button>
             </form>

@@ -9,11 +9,28 @@ export interface Size {
   value: string;
 }
 
+export interface Brand {
+  _id: string;
+  name: string;
+  imageName: string | null;
+  imageUrl: string | null;
+  description: string;
+  createdAt: string;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  label: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Product {
   _id: string;
-  brand: string;
+  brand: Brand;
   name: string;
-  category: string;
+  category: Category;
   description: string;
   price: number;
   discount?: number;

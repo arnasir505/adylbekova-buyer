@@ -64,13 +64,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='min-h-screen flex justify-center items-start md:items-center p-8'>
+    <div className='min-h-screen flex justify-center items-start md:items-center p-8 bg-muted'>
       <Card className='w-full max-w-sm'>
         <CardHeader>
           <CardTitle className='text-2xl'>Вход</CardTitle>
-          <CardDescription>
-            Введите email чтобы войти в систему
-          </CardDescription>
+          <CardDescription>Введите email чтобы войти в систему</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -125,7 +123,11 @@ export default function LoginPage() {
                     )}
                   />
                 </div>
-                <Button type='submit' className='w-full' disabled={isLoading}>
+                <Button
+                  type='submit'
+                  className='w-full rounded-md'
+                  disabled={isLoading}
+                >
                   {isLoading ? <Loader2 className='animate-spin' /> : 'Войти'}
                 </Button>
               </div>

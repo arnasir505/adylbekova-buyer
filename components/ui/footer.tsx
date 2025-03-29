@@ -42,6 +42,7 @@ const Footer = () => {
           <div className='flex justify-center gap-12'>
             <Link href='/products'>О нас</Link>
             <Link href='/products'>Контакты</Link>
+            {/* <Link href='/how-to-order'>Как оформить заказ</Link> */}
             <Link href='/products'>Блог</Link>
           </div>
         </div>

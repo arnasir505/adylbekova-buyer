@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '../lib/constants';
-import { Product, ProductsResponse } from '@/types/products';
+import { Brand, Category, Product, ProductsResponse } from '@/types/products';
 import { LoginResponse } from '@/types/user';
 
 export const api = createApi({
@@ -20,6 +20,8 @@ export const api = createApi({
     getProductById: builder.query<Product, string>({
       query: (id) => `/products/${id}`,
     }),
+    getBrands: builder.query<Brand[], void>({ query: () => '/brands' }),
+    getCategories: builder.query<Category[], void>({ query: () => '/categories' }),
     login: builder.mutation<LoginResponse, { email: string; password: string }>(
       {
         query: (credentials) => ({
@@ -45,5 +47,10 @@ export const api = createApi({
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation } =
-  api;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useLoginMutation,
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+} = api;

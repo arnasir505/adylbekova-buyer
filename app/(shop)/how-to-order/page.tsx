@@ -34,21 +34,21 @@ const HowToOrder = () => {
         <li>
           Россия:
           <ul className='list-disc ps-5 space-y-1'>
-            <li>💳 СберБанк</li>
-            <li>💳 Т-Банк</li>
-            <li>💳 Альфа-Банк</li>
+            <li>СберБанк 89990034401 Айдана Алтынбековна</li>
+            <li>Т-Банк</li>
+            <li>Альфа-Банк</li>
           </ul>
         </li>
         <li>
           Казахстан:
           <ul className='list-disc ps-5 space-y-1'>
-            <li>💳 Kaspi</li>
+            <li>Kaspi</li>
           </ul>
         </li>
         <li>
           Другие страны (кроме Израиля и Швейцарии):
           <ul className='list-disc ps-5 space-y-1'>
-            <li>🌍 PayPal</li>
+            <li>PayPal</li>
           </ul>
         </li>
       </ul>
