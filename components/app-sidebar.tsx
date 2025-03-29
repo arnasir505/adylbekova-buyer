@@ -28,7 +28,7 @@ const data = {
   navMain: [
     {
       title: 'Панель',
-      url: '#',
+      url: '/admin',
       icon: IconDashboard,
     },
     {
