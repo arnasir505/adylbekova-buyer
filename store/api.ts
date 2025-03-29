@@ -1,15 +1,50 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { API_URL } from '../lib/constants';
-import { Product, ProductsResponse } from '@/types/products';
+import { API_URL } from '@/lib/constants';
+import { Product, ProductFields, ProductsResponse } from '@/types/products';
 import { LoginResponse } from '@/types/user';
 import { BrandResponse } from '@/types/brands';
 import { CategoryResponse } from '@/types/categories';
 import { SizeResponse } from '@/types/sizes';
 import { ColorResponse } from '@/types/colors';
+import { RootState } from '@/store';
+import { unsetUser, updateState } from './user/userSlice';
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: API_URL,
+  prepareHeaders: (headers, { getState }) => {
+    const accessToken = (getState() as RootState).user.user?.accessToken;
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
+    }
+    return headers;
+  },
+  credentials: 'include',
+});
+
+export const baseQueryWithReauth: typeof baseQuery = async (
+  args,
+  api,
+  extraOptions
+) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (result.error?.status === 401) {
+    const refreshResult = await baseQuery('/users/refresh', api, extraOptions);
+
+    if (refreshResult.data) {
+      api.dispatch(updateState(refreshResult.data as LoginResponse));
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      api.dispatch(unsetUser());
+    }
+  }
+
+  return result;
+};
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getProducts: builder.query<
       ProductsResponse,
@@ -102,6 +137,36 @@ export const api = createApi({
         },
       }
     ),
+    createProduct: builder.mutation<Product, ProductFields>({
+      query: (product) => {
+        const formData = new FormData();
+        formData.append('name', product.name);
+        if (product.images) {
+          for (const file of product.images) {
+            formData.append('images', file);
+          }
+        }
+        formData.append('description', product.description);
+        formData.append('price', product.price);
+        if (product.discount) {
+          formData.append('discount', product.discount);
+        }
+        formData.append('material', product.material);
+        for (const size of product.sizes) {
+          formData.append('sizes', size);
+        }
+        for (const color of product.colors) {
+          formData.append('colors', color);
+        }
+        formData.append('brand', product.brand);
+        formData.append('category', product.category);
+        return {
+          url: '/products',
+          method: 'POST',
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -113,4 +178,5 @@ export const {
   useGetCategoriesQuery,
   useGetSizesQuery,
   useGetColorsQuery,
+  useCreateProductMutation,
 } = api;

@@ -25,3 +25,16 @@ export interface ProductsResponse {
   products: Product[];
   totalPages: number;
 }
+
+export interface ProductFields {
+  name: string;
+  images: FileList | null;
+  description: string;
+  price: string;
+  discount: string;
+  material: string;
+  sizes: string[];
+  colors: string[];
+  brand: string;
+  category: string;
+}

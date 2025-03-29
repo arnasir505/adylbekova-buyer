@@ -14,11 +14,13 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import {
+  useCreateProductMutation,
   useGetBrandsQuery,
   useGetCategoriesQuery,
   useGetColorsQuery,
   useGetSizesQuery,
 } from '@/store/api';
+import { ProductFields } from '@/types/products';
 import { FormEvent, useState } from 'react';
 
 const NewProduct = () => {
@@ -26,6 +28,25 @@ const NewProduct = () => {
   const { data: sizesData } = useGetSizesQuery({});
   const { data: brandsData } = useGetBrandsQuery({});
   const { data: categoriesData } = useGetCategoriesQuery({});
+  const [images, setImages] = useState<FileList | null>(null);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [material, setMaterial] = useState('');
+  const [brand, setBrand] = useState('');
+  const [category, setCategory] = useState('');
+
+  const [createProduct, { isLoading }] = useCreateProductMutation();
+
+  const handleCreateProduct = async (values: ProductFields) => {
+    try {
+      const response = await createProduct(values).unwrap();
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const colorsList =
     colorsData?.colors.map((color) => ({
@@ -44,7 +65,19 @@ const NewProduct = () => {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log({ colors: selectedColors, sizes: selectedSizes });
+    const product: ProductFields = {
+      images,
+      name,
+      description,
+      price,
+      discount,
+      material,
+      brand,
+      category,
+      colors: selectedColors,
+      sizes: selectedSizes,
+    };
+    void handleCreateProduct(product);
   };
   return (
     <>
@@ -54,29 +87,57 @@ const NewProduct = () => {
           <form className='flex flex-col gap-4' onSubmit={onSubmit}>
             <div className='flex flex-col gap-3'>
               <Label htmlFor='images'>Изображения</Label>
-              <Input id='images' type='file' multiple accept='image/*' />
+              <Input
+                id='images'
+                type='file'
+                multiple
+                accept='image/*'
+                onChange={(e) => setImages(e.target.files)}
+              />
             </div>
             <div className='flex flex-col gap-3'>
               <Label htmlFor='name'>Название</Label>
-              <Input id='name' />
+              <Input
+                id='name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className='flex flex-col gap-3'>
               <Label htmlFor='description'>Описание</Label>
-              <Textarea id='description' />
+              <Textarea
+                id='description'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='flex flex-col gap-3'>
                 <Label htmlFor='price'>Цена (в долларах)</Label>
-                <Input id='price' type='number' />
+                <Input
+                  id='price'
+                  type='number'
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
               </div>
               <div className='flex flex-col gap-3'>
                 <Label htmlFor='discount'>Скидка (необязательно)</Label>
-                <Input id='discount' type='number' />
+                <Input
+                  id='discount'
+                  type='number'
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
+                />
               </div>
             </div>
             <div className='flex flex-col gap-3'>
               <Label htmlFor='material'>Материал</Label>
-              <Textarea id='material' />
+              <Textarea
+                id='material'
+                value={material}
+                onChange={(e) => setMaterial(e.target.value)}
+              />
             </div>
             <div className='flex flex-col gap-3'>
               <Label htmlFor='size'>Размер</Label>
@@ -99,7 +160,7 @@ const NewProduct = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='flex flex-col gap-3'>
                 <Label htmlFor='brand'>Бренд</Label>
-                <Select>
+                <Select value={brand} onValueChange={setBrand}>
                   <SelectTrigger id='brand' className='w-full'>
                     <SelectValue placeholder='Выберите бренд' />
                   </SelectTrigger>
@@ -114,7 +175,7 @@ const NewProduct = () => {
               </div>
               <div className='flex flex-col gap-3'>
                 <Label htmlFor='category'>Категория</Label>
-                <Select>
+                <Select value={category} onValueChange={setCategory}>
                   <SelectTrigger id='category' className='w-full'>
                     <SelectValue placeholder='Выберите категорию' />
                   </SelectTrigger>
@@ -128,7 +189,9 @@ const NewProduct = () => {
                 </Select>
               </div>
             </div>
-            <Button type='submit'>Создать</Button>
+            <Button type='submit' disabled={isLoading}>
+              Создать
+            </Button>
           </form>
         </div>
       </div>
