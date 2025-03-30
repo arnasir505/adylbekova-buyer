@@ -122,19 +122,6 @@ export const api = createApi({
           method: 'POST',
           body: credentials,
         }),
-        transformErrorResponse: (error) => {
-          if (
-            error &&
-            typeof error === 'object' &&
-            'data' in error &&
-            error.data &&
-            typeof error.data === 'object' &&
-            'error' in error.data
-          ) {
-            return (error.data as { error: string }).error;
-          }
-          return 'Произошла неизвестная ошибка';
-        },
       }
     ),
     createProduct: builder.mutation<Product, ProductFields>({

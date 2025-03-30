@@ -21,67 +21,21 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import {
-  ACCEPTED_IMAGE_MIME_TYPES,
-  LIMIT,
-  MAX_FILE_SIZE,
-} from '@/lib/constants';
-import {
   useCreateProductMutation,
   useGetBrandsQuery,
   useGetCategoriesQuery,
   useGetColorsQuery,
   useGetSizesQuery,
 } from '@/store/api';
-import { GlobalError } from '@/types/user';
+import { GlobalError } from '@/types/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { productFormSchema as formSchema } from '@/lib/zod-schemas';
 
 const NewProduct = () => {
-  const formSchema = z.object({
-    images: z
-      .instanceof(FileList)
-      .optional()
-      .or(z.literal(null))
-      .refine((files) => !files || files.length < LIMIT, {
-        message: `Нельзя прикрепить больше ${LIMIT} изображений`,
-      })
-      .refine(
-        (files) =>
-          !files ||
-          Array.from(files).every((file) => file.size <= MAX_FILE_SIZE),
-        {
-          message: 'Максимальный размер изображения - 5MB',
-        }
-      )
-      .refine(
-        (files) =>
-          !files ||
-          Array.from(files).every((file) =>
-            ACCEPTED_IMAGE_MIME_TYPES.includes(file.type)
-          ),
-        {
-          message: 'Допустимые форматы: .jpg, .jpeg, .png, .webp',
-        }
-      ),
-    name: z.string().min(1, { message: 'Введите название' }),
-    description: z.string().optional(),
-    price: z.string().min(1, { message: 'Цена должна быть выше нуля' }),
-    discount: z.string().optional(),
-    material: z.string().optional(),
-    brand: z.string().min(1, { message: 'Выберите бренд' }),
-    category: z.string().min(1, { message: 'Выберите категорию' }),
-    colors: z
-      .string()
-      .array()
-      .min(1, { message: 'Выберите хотя бы один цвет' }),
-    sizes: z
-      .string()
-      .array()
-      .min(1, { message: 'Выберите хотя бы один размер' }),
-  });
   const { data: colorsData } = useGetColorsQuery({});
   const { data: sizesData } = useGetSizesQuery({});
   const { data: brandsData } = useGetBrandsQuery({});

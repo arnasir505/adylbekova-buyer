@@ -13,16 +13,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useCreateCategoryMutation } from '@/store/api';
+import { GlobalError } from '@/types/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  label: z.string().min(1, { message: 'Введите название' }),
-  name: z.string().min(1, { message: 'Введите название на английском' }),
-});
+import { categoryFormSchema as formSchema } from '@/lib/zod-schemas';
 
 const NewCategory = () => {
   const [createCategory, { isLoading }] = useCreateCategoryMutation();
@@ -38,9 +35,12 @@ const NewCategory = () => {
     try {
       await createCategory(values).unwrap();
       toast.success('Категория создана');
-      form.reset()
+      form.reset();
     } catch (e) {
-      console.log(e);
+      const error = e as GlobalError;
+      form.setError('name', {
+        message: error.data.error,
+      });
     }
   };
 
@@ -76,11 +76,14 @@ const NewCategory = () => {
                     <FormControl>
                       <Input placeholder='dresses_evening' {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Это перевод названия категории, вместо пробелов
-                      используйте нижнее подчеркивание _
-                    </FormDescription>
                     <FormMessage />
+                    <FormDescription>
+                      Это перевод названия категории, для мужских категорий
+                      используйте букву m в начале, вместо пробелов используйте
+                      нижнее подчеркивание _
+                      <br />
+                      рубашки мужские - mshirts
+                    </FormDescription>
                   </FormItem>
                 )}
               />

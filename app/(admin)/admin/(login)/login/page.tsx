@@ -25,14 +25,8 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Email is required.' })
-    .email('This is not a valid email.'),
-  password: z.string().min(1, { message: 'Password is required.' }),
-});
+import { loginFormSchema as formSchema } from '@/lib/zod-schemas';
+import { GlobalError } from '@/types/errors';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -52,10 +46,9 @@ const LoginPage = () => {
       const response = await login(values).unwrap();
       dispatch(updateState(response));
       router.push('/admin');
-    } catch (err) {
-      if (typeof err === 'string') {
-        form.setError('password', { message: err });
-      }
+    } catch (e) {
+      const error = e as GlobalError;
+      form.setError('password', { message: error.data.error });
     }
   };
 

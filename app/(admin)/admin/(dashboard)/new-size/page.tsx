@@ -12,16 +12,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useCreateSizeMutation } from '@/store/api';
-import { GlobalError } from '@/types/user';
+import { GlobalError } from '@/types/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  value: z.string().min(1, { message: 'Введите размер' }),
-});
+import { sizeFormSchema as formSchema } from '@/lib/zod-schemas';
 
 const NewSize = () => {
   const [createSize, { isLoading }] = useCreateSizeMutation();

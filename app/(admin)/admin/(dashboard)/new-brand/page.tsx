@@ -12,28 +12,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ACCEPTED_IMAGE_MIME_TYPES, MAX_FILE_SIZE } from '@/lib/constants';
 import { useCreateBrandMutation } from '@/store/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  image: z
-    .instanceof(File)
-    .optional()
-    .or(z.null())
-    .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
-      message: 'Максимальный размер изображения - 5MB.',
-    })
-    .refine((file) => !file || ACCEPTED_IMAGE_MIME_TYPES.includes(file.type), {
-      message: 'Допустимые форматы: .jpg, .jpeg, .png, .webp.',
-    }),
-  name: z.string().min(1, { message: 'Введите название' }),
-  description: z.string().optional(),
-});
+import { brandFormSchema as formSchema } from '@/lib/zod-schemas';
+import { GlobalError } from '@/types/errors';
 
 const NewBrand = () => {
   const [createBrand, { isLoading }] = useCreateBrandMutation();
@@ -52,7 +38,10 @@ const NewBrand = () => {
       toast.success('Бренд создан');
       form.reset();
     } catch (e) {
-      console.log(e);
+      const error = e as GlobalError;
+      form.setError('name', {
+        message: error.data.error,
+      });
     }
   };
 
