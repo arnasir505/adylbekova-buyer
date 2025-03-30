@@ -127,7 +127,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
           </form>
         </div>
         <DrawerFooter>
-          <Button>Submit</Button>
+          <Button>В разработке</Button>
           <DrawerClose asChild>
             <Button variant='outline'>Done</Button>
           </DrawerClose>
