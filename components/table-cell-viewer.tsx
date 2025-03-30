@@ -45,7 +45,9 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
     { value: 'XXL', label: 'XXL' },
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
   return (
