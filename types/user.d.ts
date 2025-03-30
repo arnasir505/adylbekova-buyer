@@ -18,7 +18,9 @@ export interface UsersState {
 }
 
 export interface GlobalError {
-  error: string;
+  data: {
+    message: string;
+  };
 }
 
 export interface ValidationError {

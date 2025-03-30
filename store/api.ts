@@ -3,9 +3,9 @@ import { API_URL } from '@/lib/constants';
 import { Product, ProductFields, ProductsResponse } from '@/types/products';
 import { LoginResponse } from '@/types/user';
 import { Brand, BrandResponse } from '@/types/brands';
-import { CategoryResponse } from '@/types/categories';
-import { SizeResponse } from '@/types/sizes';
-import { ColorResponse } from '@/types/colors';
+import { Category, CategoryResponse } from '@/types/categories';
+import { Size, SizeResponse } from '@/types/sizes';
+import { Color, ColorResponse } from '@/types/colors';
 import { RootState } from '@/store';
 import { unsetUser, updateState } from './user/userSlice';
 
@@ -191,6 +191,50 @@ export const api = createApi({
         };
       },
     }),
+    createCategory: builder.mutation<
+      Category,
+      {
+        name: string;
+        label: string;
+      }
+    >({
+      query: (category) => {
+        return {
+          url: '/categories',
+          method: 'POST',
+          body: category,
+        };
+      },
+    }),
+    createSize: builder.mutation<
+      Size,
+      {
+        value: string;
+      }
+    >({
+      query: (size) => {
+        return {
+          url: '/sizes',
+          method: 'POST',
+          body: size,
+        };
+      },
+    }),
+    createColor: builder.mutation<
+      Color,
+      {
+        name: string;
+        hex: string;
+      }
+    >({
+      query: (color) => {
+        return {
+          url: '/colors',
+          method: 'POST',
+          body: color,
+        };
+      },
+    }),
   }),
 });
 
@@ -204,4 +248,7 @@ export const {
   useGetColorsQuery,
   useCreateProductMutation,
   useCreateBrandMutation,
+  useCreateCategoryMutation,
+  useCreateSizeMutation,
+  useCreateColorMutation,
 } = api;

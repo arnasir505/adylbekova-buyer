@@ -28,7 +28,7 @@ import { selectUser } from '@/store/user/userSlice';
 const data = {
   navMain: [
     {
-      title: 'Панель',
+      title: 'Таблицы',
       url: '/admin',
       icon: IconDashboard,
     },
@@ -40,6 +40,21 @@ const data = {
     {
       title: 'Создать бренд',
       url: '/admin/new-brand',
+      icon: IconCirclePlus,
+    },
+    {
+      title: 'Создать категорию',
+      url: '/admin/new-category',
+      icon: IconCirclePlus,
+    },
+    {
+      title: 'Создать размер',
+      url: '/admin/new-size',
+      icon: IconCirclePlus,
+    },
+    {
+      title: 'Создать цвет',
+      url: '/admin/new-color',
       icon: IconCirclePlus,
     },
   ],

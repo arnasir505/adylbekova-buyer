@@ -11,43 +11,42 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useCreateBrandMutation } from '@/store/api';
+import { useCreateColorMutation } from '@/store/api';
+import { GlobalError } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  image: z.instanceof(File).optional().or(z.literal(null)),
-  name: z.string().min(1, { message: 'Введите название' }),
-  description: z.string().optional(),
+  name: z.string().min(1, { message: 'Введите название цвета' }),
+  hex: z.string().min(1, { message: 'Выберите цвет' }),
 });
 
-const NewBrand = () => {
-  const [createBrand, { isLoading }] = useCreateBrandMutation();
+const NewColor = () => {
+  const [createColor, { isLoading }] = useCreateColorMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      description: '',
-      image: undefined,
+      hex: '#000000',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await createBrand(values).unwrap();
-      toast.success('Бренд создан');
+      await createColor(values).unwrap();
+      toast.success('Цвет создан');
       form.reset();
     } catch (e) {
-      console.log(e);
+      const error = e as GlobalError;
+      form.setError('name', { message: error.data.message });
     }
   };
 
   return (
     <>
-      <SiteHeader title='Новый бренд' />
+      <SiteHeader title='Новый цвет' />
       <div className='w-full p-4'>
         <div className='flex flex-col max-w-md gap-4 overflow-y-auto p-4'>
           <Form {...form}>
@@ -60,9 +59,9 @@ const NewBrand = () => {
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Название</FormLabel>
+                    <FormLabel>Название цвета</FormLabel>
                     <FormControl>
-                      <Input placeholder='Zara' {...field} />
+                      <Input placeholder='черный' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -70,35 +69,12 @@ const NewBrand = () => {
               />
               <FormField
                 control={form.control}
-                name='description'
+                name='hex'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Описание</FormLabel>
+                    <FormLabel>Цвет</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='image'
-                render={({ field: { onChange, onBlur, name, ref } }) => (
-                  <FormItem>
-                    <FormLabel>Изображение</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='file'
-                        accept='image/*'
-                        onBlur={onBlur}
-                        name={name}
-                        ref={ref}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0] || null;
-                          onChange(file);
-                        }}
-                      />
+                      <Input type='color' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,4 +91,4 @@ const NewBrand = () => {
   );
 };
 
-export default NewBrand;
+export default NewColor;
