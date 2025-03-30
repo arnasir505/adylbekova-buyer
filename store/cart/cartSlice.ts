@@ -1,7 +1,9 @@
-import { Color, Product, Size } from '@/types/products';
+import { Product } from '@/types/products';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { CartState } from '@/types/cart';
+import { Size } from '@/types/sizes';
+import { Color } from '@/types/colors';
 
 const initialState: CartState = {
   items: [],
