@@ -5,6 +5,7 @@ import { Footer } from '@/components/ui/footer';
 import ReduxProvider from '@/providers/ReduxProvider';
 import '@/app/globals.css';
 import { Toaster } from '@/components/ui/sonner';
+import { Suspense } from 'react';
 
 const tenorSans = Tenor_Sans({
   variable: '--font-tenor-sans',
@@ -36,9 +37,9 @@ export default function RootLayout({
         >
           <main className='max-w-6xl mx-auto px-5'>
             <Navbar />
-            {children}
+            <Suspense>{children}</Suspense>
           </main>
-          <Toaster position='top-center'/>
+          <Toaster position='top-center' />
           <Footer />
         </body>
       </html>
