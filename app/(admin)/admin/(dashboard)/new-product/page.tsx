@@ -2,8 +2,15 @@
 
 import { SiteHeader } from '@/components/site-header';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multiSelect';
 import {
   Select,
@@ -14,39 +21,87 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  LIMIT,
+  MAX_FILE_SIZE,
+} from '@/lib/constants';
+import {
   useCreateProductMutation,
   useGetBrandsQuery,
   useGetCategoriesQuery,
   useGetColorsQuery,
   useGetSizesQuery,
 } from '@/store/api';
-import { ProductFields } from '@/types/products';
-import { FormEvent, useState } from 'react';
+import { GlobalError } from '@/types/user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const NewProduct = () => {
+  const formSchema = z.object({
+    images: z
+      .instanceof(FileList)
+      .optional()
+      .or(z.literal(null))
+      .refine((files) => !files || files.length < LIMIT, {
+        message: `Нельзя прикрепить больше ${LIMIT} изображений`,
+      })
+      .refine(
+        (files) =>
+          !files ||
+          Array.from(files).every((file) => file.size <= MAX_FILE_SIZE),
+        {
+          message: 'Максимальный размер изображения - 5MB',
+        }
+      )
+      .refine(
+        (files) =>
+          !files ||
+          Array.from(files).every((file) =>
+            ACCEPTED_IMAGE_MIME_TYPES.includes(file.type)
+          ),
+        {
+          message: 'Допустимые форматы: .jpg, .jpeg, .png, .webp',
+        }
+      ),
+    name: z.string().min(1, { message: 'Введите название' }),
+    description: z.string().optional(),
+    price: z.string().min(1, { message: 'Цена должна быть выше нуля' }),
+    discount: z.string().optional(),
+    material: z.string().optional(),
+    brand: z.string().min(1, { message: 'Выберите бренд' }),
+    category: z.string().min(1, { message: 'Выберите категорию' }),
+    colors: z
+      .string()
+      .array()
+      .min(1, { message: 'Выберите хотя бы один цвет' }),
+    sizes: z
+      .string()
+      .array()
+      .min(1, { message: 'Выберите хотя бы один размер' }),
+  });
   const { data: colorsData } = useGetColorsQuery({});
   const { data: sizesData } = useGetSizesQuery({});
   const { data: brandsData } = useGetBrandsQuery({});
   const { data: categoriesData } = useGetCategoriesQuery({});
-  const [images, setImages] = useState<FileList | null>(null);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [discount, setDiscount] = useState('');
-  const [material, setMaterial] = useState('');
-  const [brand, setBrand] = useState('');
-  const [category, setCategory] = useState('');
-
   const [createProduct, { isLoading }] = useCreateProductMutation();
 
-  const handleCreateProduct = async (values: ProductFields) => {
-    try {
-      const response = await createProduct(values).unwrap();
-      console.log(response);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      images: null,
+      name: '',
+      description: '',
+      price: '',
+      discount: '',
+      material: '',
+      brand: '',
+      category: '',
+      colors: [],
+      sizes: [],
+    },
+  });
 
   const colorsList =
     colorsData?.colors.map((color) => ({
@@ -60,139 +115,227 @@ const NewProduct = () => {
       label: size.value,
     })) || [];
 
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const product: ProductFields = {
-      images,
-      name,
-      description,
-      price,
-      discount,
-      material,
-      brand,
-      category,
-      colors: selectedColors,
-      sizes: selectedSizes,
-    };
-    void handleCreateProduct(product);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await createProduct(values).unwrap();
+      toast.success('Товар создан');
+      form.reset();
+    } catch (e) {
+      const error = e as GlobalError;
+      form.setError('discount', { message: error.data.error });
+    }
   };
+
   return (
     <>
       <SiteHeader title='Новый товар' />
       <div className='w-full p-4'>
         <div className='flex flex-col max-w-md gap-4 overflow-y-auto p-4'>
-          <form className='flex flex-col gap-4' onSubmit={onSubmit}>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='images'>Изображения</Label>
-              <Input
-                id='images'
-                type='file'
-                multiple
-                accept='image/*'
-                onChange={(e) => setImages(e.target.files)}
-              />
-            </div>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='name'>Название</Label>
-              <Input
-                id='name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='description'>Описание</Label>
-              <Textarea
-                id='description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          <Form {...form}>
+            <form
+              className='flex flex-col gap-4'
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
               <div className='flex flex-col gap-3'>
-                <Label htmlFor='price'>Цена (в долларах)</Label>
-                <Input
-                  id='price'
-                  type='number'
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                <FormField
+                  control={form.control}
+                  name='images'
+                  render={({ field: { onChange, onBlur, name, ref } }) => (
+                    <FormItem>
+                      <FormLabel>Изображения</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='file'
+                          accept='image/*'
+                          multiple
+                          onBlur={onBlur}
+                          name={name}
+                          ref={ref}
+                          onChange={(e) => onChange(e.target.files || null)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
               <div className='flex flex-col gap-3'>
-                <Label htmlFor='discount'>Скидка (необязательно)</Label>
-                <Input
-                  id='discount'
-                  type='number'
-                  value={discount}
-                  onChange={(e) => setDiscount(e.target.value)}
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Название</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-            </div>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='material'>Материал</Label>
-              <Textarea
-                id='material'
-                value={material}
-                onChange={(e) => setMaterial(e.target.value)}
-              />
-            </div>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='size'>Размер</Label>
-              <MultiSelect
-                id='size'
-                options={sizesList}
-                onValueChange={setSelectedSizes}
-                placeholder='Выберите размеры'
-              />
-            </div>
-            <div className='flex flex-col gap-3'>
-              <Label htmlFor='color'>Цвет</Label>
-              <MultiSelect
-                id='color'
-                options={colorsList}
-                onValueChange={setSelectedColors}
-                placeholder='Выберите цвета'
-              />
-            </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='flex flex-col gap-3'>
-                <Label htmlFor='brand'>Бренд</Label>
-                <Select value={brand} onValueChange={setBrand}>
-                  <SelectTrigger id='brand' className='w-full'>
-                    <SelectValue placeholder='Выберите бренд' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {brandsData?.brands.map((brand) => (
-                      <SelectItem key={brand._id} value={brand._id}>
-                        {brand.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Описание</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                <div className='flex flex-col gap-3'>
+                  <FormField
+                    control={form.control}
+                    name='price'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Цена в долларах</FormLabel>
+                        <FormControl>
+                          <Input type='number' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='flex flex-col gap-3'>
+                  <FormField
+                    control={form.control}
+                    name='discount'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Скидка (необязательно)</FormLabel>
+                        <FormControl>
+                          <Input type='number' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
               <div className='flex flex-col gap-3'>
-                <Label htmlFor='category'>Категория</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger id='category' className='w-full'>
-                    <SelectValue placeholder='Выберите категорию' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categoriesData?.categories.map((category) => (
-                      <SelectItem key={category._id} value={category._id}>
-                        {category.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name='material'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Материал</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-            </div>
-            <Button type='submit' disabled={isLoading} className='rounded-lg'>
-              Создать
-            </Button>
-          </form>
+              <div className='flex flex-col gap-3'>
+                <FormField
+                  control={form.control}
+                  name='sizes'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Размер</FormLabel>
+                      <MultiSelect
+                        options={sizesList}
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                        placeholder='Выберите размеры'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='flex flex-col gap-3'>
+                <FormField
+                  control={form.control}
+                  name='colors'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Цвет</FormLabel>
+                      <MultiSelect
+                        options={colorsList}
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                        placeholder='Выберите цвета'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                <div className='flex flex-col gap-3'>
+                  <FormField
+                    control={form.control}
+                    name='brand'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Бренд</FormLabel>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className='w-full'>
+                            <SelectValue placeholder='Выберите бренд' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {brandsData?.brands.map((brand) => (
+                              <SelectItem key={brand._id} value={brand._id}>
+                                {brand.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='flex flex-col gap-3'>
+                  <FormField
+                    control={form.control}
+                    name='category'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Категория</FormLabel>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className='w-full'>
+                            <SelectValue placeholder='Выберите категорию' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categoriesData?.categories.map((category) => (
+                              <SelectItem
+                                key={category._id}
+                                value={category._id}
+                              >
+                                {category.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <Button type='submit' disabled={isLoading} className='rounded-lg'>
+                Создать
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
     </>

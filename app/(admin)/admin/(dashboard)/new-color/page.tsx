@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -40,7 +41,7 @@ const NewColor = () => {
       form.reset();
     } catch (e) {
       const error = e as GlobalError;
-      form.setError('name', { message: error.data.message });
+      form.setError('name', { message: error.data.error });
     }
   };
 
@@ -76,6 +77,7 @@ const NewColor = () => {
                     <FormControl>
                       <Input type='color' {...field} />
                     </FormControl>
+                    <FormDescription>Не забудьте выбрать цвет</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

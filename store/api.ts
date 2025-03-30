@@ -146,12 +146,16 @@ export const api = createApi({
             formData.append('images', file);
           }
         }
-        formData.append('description', product.description);
+        if (product.description) {
+          formData.append('description', product.description);
+        }
         formData.append('price', product.price);
         if (product.discount) {
           formData.append('discount', product.discount);
         }
-        formData.append('material', product.material);
+        if (product.material) {
+          formData.append('material', product.material);
+        }
         for (const size of product.sizes) {
           formData.append('sizes', size);
         }

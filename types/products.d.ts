@@ -28,11 +28,11 @@ export interface ProductsResponse {
 
 export interface ProductFields {
   name: string;
-  images: FileList | null;
-  description: string;
+  images?: FileList | null;
+  description?: string;
   price: string;
-  discount: string;
-  material: string;
+  discount?: string;
+  material?: string;
   sizes: string[];
   colors: string[];
   brand: string;

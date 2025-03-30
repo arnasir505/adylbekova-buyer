@@ -38,7 +38,7 @@ const NewSize = () => {
       form.reset();
     } catch (e) {
       const error = e as GlobalError;
-      form.setError('value', { message: error.data.message });
+      form.setError('value', { message: error.data.error });
     }
   };
 

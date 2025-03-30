@@ -1,4 +1,12 @@
 export const API_URL = process.env['NEXT_PUBLIC_API_URL'];
+export const LIMIT = 10;
+export const MAX_FILE_SIZE = 1024 * 1024 * 5;
+export const ACCEPTED_IMAGE_MIME_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
 export const MENU_ITEMS = [
   {
     label: 'Бренд',

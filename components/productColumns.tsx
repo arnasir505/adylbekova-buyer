@@ -90,7 +90,9 @@ export const productColumns: ColumnDef<Product>[] = [
     accessorKey: 'sizes',
     header: 'Размеры',
     cell: ({ row }) => (
-      <div>{row.original.sizes.map((size) => size.value).join(', ')}</div>
+      <div className='max-w-ms text-wrap'>
+        {row.original.sizes.map((size) => size.value).join(', ')}
+      </div>
     ),
   },
   {

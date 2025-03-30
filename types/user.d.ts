@@ -19,7 +19,7 @@ export interface UsersState {
 
 export interface GlobalError {
   data: {
-    message: string;
+    error: string;
   };
 }
 
