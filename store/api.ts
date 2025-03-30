@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '@/lib/constants';
 import { Product, ProductFields, ProductsResponse } from '@/types/products';
 import { LoginResponse } from '@/types/user';
-import { BrandResponse } from '@/types/brands';
+import { Brand, BrandResponse } from '@/types/brands';
 import { CategoryResponse } from '@/types/categories';
 import { SizeResponse } from '@/types/sizes';
 import { ColorResponse } from '@/types/colors';
@@ -167,6 +167,30 @@ export const api = createApi({
         };
       },
     }),
+    createBrand: builder.mutation<
+      Brand,
+      {
+        name: string;
+        description?: string;
+        image?: File | null;
+      }
+    >({
+      query: (brand) => {
+        const formData = new FormData();
+        formData.append('name', brand.name);
+        if (brand.description) {
+          formData.append('description', brand.description);
+        }
+        if (brand.image) {
+          formData.append('image', brand.image);
+        }
+        return {
+          url: '/brands',
+          method: 'POST',
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -179,4 +203,5 @@ export const {
   useGetSizesQuery,
   useGetColorsQuery,
   useCreateProductMutation,
+  useCreateBrandMutation,
 } = api;

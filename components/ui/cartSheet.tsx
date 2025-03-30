@@ -2,6 +2,7 @@
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -19,7 +20,7 @@ import { CartItem } from './cartItem';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Button } from './button';
+import { buttonVariants } from './button';
 
 export const CartSheet = () => {
   const cart = useAppSelector(selectCartItems);
@@ -64,9 +65,16 @@ export const CartSheet = () => {
           <p className='uppercase pt-1'>Товаров в корзине: {totalItems}</p>
           <p className='uppercase pt-1'>Общая сумма: ${totalPrice}</p>
           {cartHasItems && (
-            <Button className='w-full mt-4' size='xl' asChild>
+            <SheetClose
+              className={buttonVariants({
+                variant: 'default',
+                size: 'xl',
+                className: 'w-full mt-4',
+              })}
+              asChild
+            >
               <Link href='/cart'>Перейти в корзину</Link>
-            </Button>
+            </SheetClose>
           )}
         </div>
       </SheetContent>

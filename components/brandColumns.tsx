@@ -40,7 +40,9 @@ export const brandColumns: ColumnDef<Brand>[] = [
   {
     accessorKey: 'description',
     header: 'Описание',
-    cell: ({ row }) => <div>{row.original.description}</div>,
+    cell: ({ row }) => (
+      <div className='max-w-sm text-wrap'>{row.original.description}</div>
+    ),
   },
   {
     accessorKey: 'createdAt',

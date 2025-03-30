@@ -2,6 +2,7 @@
 
 import { ComponentProps } from 'react';
 import {
+  IconCirclePlus,
   IconDashboard,
   IconHelp,
   IconSearch,
@@ -35,6 +36,11 @@ const data = {
       title: 'Команда',
       url: '#',
       icon: IconUsers,
+    },
+    {
+      title: 'Создать бренд',
+      url: '/admin/new-brand',
+      icon: IconCirclePlus,
     },
   ],
   navSecondary: [

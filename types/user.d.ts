@@ -16,3 +16,19 @@ export interface LoginResponse {
 export interface UsersState {
   user: LoginResponse | null;
 }
+
+export interface GlobalError {
+  error: string;
+}
+
+export interface ValidationError {
+  errors: {
+    [key: string]: {
+      name: string;
+      message: string;
+    };
+  };
+  message: string;
+  name: string;
+  _message: string;
+}

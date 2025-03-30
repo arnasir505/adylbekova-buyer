@@ -189,7 +189,7 @@ const NewProduct = () => {
                 </Select>
               </div>
             </div>
-            <Button type='submit' disabled={isLoading}>
+            <Button type='submit' disabled={isLoading} className='rounded-lg'>
               Создать
             </Button>
           </form>
