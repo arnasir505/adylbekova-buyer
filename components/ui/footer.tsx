@@ -29,7 +29,7 @@ const Footer = () => {
             <Link href='mailto:adylbekovabuyer@gmail.com'>
               adylbekovabuyer@gmail.com
             </Link>
-            <Link href='tel:+996779510201'>+996 779 510 201</Link>
+            <Link href='tel:+996779510201'>+996 774 550 202</Link>
             <p>08:00 - 22:00 - Каждый день</p>
           </div>
           <Icon
@@ -39,10 +39,10 @@ const Footer = () => {
             height={11}
             className='my-6'
           />
-          <div className='flex justify-center gap-12'>
+          <Link href='/how-to-order'>Как оформить заказ</Link>
+          <div className='flex justify-center gap-12 mt-5'>
             <Link href='/products'>О нас</Link>
             <Link href='/products'>Контакты</Link>
-            {/* <Link href='/how-to-order'>Как оформить заказ</Link> */}
             <Link href='/products'>Блог</Link>
           </div>
         </div>

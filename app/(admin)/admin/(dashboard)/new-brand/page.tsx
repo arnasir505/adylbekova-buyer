@@ -15,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ACCEPTED_IMAGE_MIME_TYPES, MAX_FILE_SIZE } from '@/lib/constants';
 import { useCreateBrandMutation } from '@/store/api';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -115,7 +116,7 @@ const NewBrand = () => {
                 )}
               />
               <Button type='submit' className='rounded-lg' disabled={isLoading}>
-                Создать
+                {isLoading ? <Loader2 className='animate-spin' /> : 'Создать'}
               </Button>
             </form>
           </Form>

@@ -34,6 +34,7 @@ import {
 } from '@/store/api';
 import { GlobalError } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -332,7 +333,7 @@ const NewProduct = () => {
                 </div>
               </div>
               <Button type='submit' disabled={isLoading} className='rounded-lg'>
-                Создать
+                {isLoading ? <Loader2 className='animate-spin' /> : 'Создать'}
               </Button>
             </form>
           </Form>

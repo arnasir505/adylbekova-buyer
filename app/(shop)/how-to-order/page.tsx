@@ -34,21 +34,19 @@ const HowToOrder = () => {
         <li>
           Россия:
           <ul className='list-disc ps-5 space-y-1'>
-            <li>СберБанк 89990034401 Айдана Алтынбековна</li>
-            <li>Т-Банк</li>
-            <li>Альфа-Банк</li>
+            <li>СберБанк: 89990034401 Айдана Алтынбековна</li>
           </ul>
         </li>
         <li>
-          Казахстан:
+          VISA:
           <ul className='list-disc ps-5 space-y-1'>
-            <li>Kaspi</li>
+            <li>4177490189067277 ADYLBEKOVA AIZHANA ALTYNBEKOVNA (МБанк)</li>
           </ul>
         </li>
         <li>
-          Другие страны (кроме Израиля и Швейцарии):
+          США:
           <ul className='list-disc ps-5 space-y-1'>
-            <li>PayPal</li>
+            <li>Zelle: +1 (425) 221-2611 Бактыбек Исмаилов</li>
           </ul>
         </li>
       </ul>

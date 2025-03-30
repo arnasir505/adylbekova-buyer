@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useCreateSizeMutation } from '@/store/api';
 import { GlobalError } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -66,7 +67,7 @@ const NewSize = () => {
                 )}
               />
               <Button type='submit' className='rounded-lg' disabled={isLoading}>
-                Создать
+                {isLoading ? <Loader2 className='animate-spin' /> : 'Создать'}
               </Button>
             </form>
           </Form>

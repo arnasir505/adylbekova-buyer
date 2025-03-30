@@ -34,7 +34,7 @@ export default function Products() {
 
   if (isLoading)
     return (
-      <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 mt-12'>
+      <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-12'>
         {Array.from({ length: limit }).map((_key, index) => (
           <ProductCardSkeleton key={index} variant='card' />
         ))}
@@ -44,7 +44,7 @@ export default function Products() {
 
   return (
     <>
-      <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 mt-12'>
+      <div className='grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-12'>
         {data?.products?.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
