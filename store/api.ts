@@ -124,6 +124,9 @@ export const api = createApi({
         }),
       }
     ),
+    logout: builder.mutation<{ message: string }, void>({
+      query: () => ({ url: '/users/logout', method: 'DELETE' }),
+    }),
     createProduct: builder.mutation<Product, ProductFields>({
       query: (product) => {
         const formData = new FormData();
@@ -242,4 +245,5 @@ export const {
   useCreateCategoryMutation,
   useCreateSizeMutation,
   useCreateColorMutation,
+  useLogoutMutation,
 } = api;

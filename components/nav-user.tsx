@@ -17,9 +17,28 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { User } from '@/types/user';
+import { useAppDispatch } from '@/store';
+import { useLogoutMutation } from '@/store/api';
+import { unsetUser } from '@/store/user/userSlice';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 export function NavUser({ user }: { user: User | undefined }) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [logout, { isLoading }] = useLogoutMutation();
   const { isMobile } = useSidebar();
+
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+      dispatch(unsetUser());
+      router.replace('/admin/login');
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -56,9 +75,18 @@ export function NavUser({ user }: { user: User | undefined }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <IconLogout />
-              Выйти
+            <DropdownMenuItem
+              onClick={() => void handleLogout()}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className='animate-spin' />
+              ) : (
+                <>
+                  <IconLogout />
+                  Выйти
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
