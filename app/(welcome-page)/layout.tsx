@@ -8,7 +8,7 @@ const tenorSans = Tenor_Sans({
   weight: ['400'],
 });
 
-export const cormorantGaramond = Cormorant_Garamond({
+const cormorantGaramond = Cormorant_Garamond({
   variable: '--font-cormorant-garamond',
   subsets: ['cyrillic', 'latin'],
   weight: ['400'],
