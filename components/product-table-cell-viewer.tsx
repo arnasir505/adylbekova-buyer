@@ -109,7 +109,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
       <DrawerTrigger asChild>
         <Button
           variant='link'
-          className='text-foreground w-fit px-0 text-left capitalize'
+          className='text-foreground w-fit px-0 text-left'
         >
           {item.name}
         </Button>

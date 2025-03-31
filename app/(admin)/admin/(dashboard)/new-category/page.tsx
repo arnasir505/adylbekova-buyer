@@ -74,15 +74,17 @@ const NewCategory = () => {
                   <FormItem>
                     <FormLabel>Название на английском</FormLabel>
                     <FormControl>
-                      <Input placeholder='dresses_evening' {...field} />
+                      <Input placeholder='dresses-evening' {...field} />
                     </FormControl>
                     <FormMessage />
                     <FormDescription>
                       Это перевод названия категории, для мужских категорий
                       используйте букву m в начале, вместо пробелов используйте
-                      нижнее подчеркивание _
+                      дефис -
                       <br />
-                      рубашки мужские - mshirts
+                      рубашки мужские = mshirts
+                      <br />
+                      платья вечерние = dresses-evening
                     </FormDescription>
                   </FormItem>
                 )}

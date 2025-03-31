@@ -298,6 +298,22 @@ export const api = createApi({
         };
       },
     }),
+    updateCategory: builder.mutation<
+      Category,
+      {
+        id: string;
+        name: string;
+        label: string;
+      }
+    >({
+      query: (category) => {
+        return {
+          url: `/categories/${category.id}`,
+          method: 'PUT',
+          body: category,
+        };
+      },
+    }),
   }),
 });
 
@@ -317,5 +333,6 @@ export const {
   useLogoutMutation,
   useUpdateProductMutation,
   useToggleArchiveProductMutation,
-  useUpdateBrandMutation
+  useUpdateBrandMutation,
+  useUpdateCategoryMutation,
 } = api;

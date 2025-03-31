@@ -59,7 +59,15 @@ export const brandFormSchema = z.object({
 
 export const categoryFormSchema = z.object({
   label: z.string().min(1, { message: 'Введите название' }),
-  name: z.string().min(1, { message: 'Введите название на английском' }),
+  name: z
+    .string()
+    .min(1, { message: 'Введите название на английском' })
+    .regex(/^[a-z0-9-]+$/, {
+      message: 'Используйте только латинские буквы, цифры и дефис',
+    })
+    .refine((val) => !val.includes(' '), {
+      message: 'Используйте дефис вместо пробела',
+    }),
 });
 
 export const colorFormSchema = z.object({

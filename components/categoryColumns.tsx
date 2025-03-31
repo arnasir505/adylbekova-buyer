@@ -9,12 +9,13 @@ import { Category } from '@/types/categories';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
+import { CategoryTableCellViewer } from './category-table-cell-viewer';
 
 export const categoryColumns: ColumnDef<Category>[] = [
   {
     accessorKey: 'label',
     header: 'Название',
-    cell: ({ row }) => <div>{row.original.label}</div>,
+    cell: ({ row }) => <CategoryTableCellViewer item={row.original} />,
   },
   {
     accessorKey: 'name',

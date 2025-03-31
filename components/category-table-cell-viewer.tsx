@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useUpdateBrandMutation } from '@/store/api';
+import { useUpdateCategoryMutation } from '@/store/api';
 import { GlobalError } from '@/types/errors';
 import {
   Form,
@@ -28,30 +28,27 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import { Textarea } from './ui/textarea';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import { Brand } from '@/types/brands';
-import { brandFormSchema as formSchema } from '@/lib/zod-schemas';
-import Image from 'next/image';
+import { categoryFormSchema as formSchema } from '@/lib/zod-schemas';
+import { Category } from '@/types/categories';
 
-export function BrandTableCellViewer({ item }: { item: Brand }) {
+export function CategoryTableCellViewer({ item }: { item: Category }) {
   const isMobile = useIsMobile();
 
-  const [updateBrand, { isLoading }] = useUpdateBrandMutation();
+  const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: item.name,
-      description: item.description,
-      image: undefined,
+      label: item.label,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await updateBrand({ ...values, id: item._id }).unwrap();
-      toast.success('Бренд успешно отредактирован');
+      await updateCategory({ ...values, id: item._id }).unwrap();
+      toast.success('Категория успешно отредактирована');
     } catch (e) {
       const error = e as GlobalError;
       form.setError('name', { message: error.data.error });
@@ -61,16 +58,13 @@ export function BrandTableCellViewer({ item }: { item: Brand }) {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
       <DrawerTrigger asChild>
-        <Button
-          variant='link'
-          className='text-foreground w-fit px-0 text-left'
-        >
-          {item.name}
+        <Button variant='link' className='text-foreground w-fit px-0 text-left'>
+          {item.label}
         </Button>
       </DrawerTrigger>
       <DrawerContent aria-describedby={undefined}>
         <DrawerHeader className='gap-1'>
-          <DrawerTitle>Редактирование бренда</DrawerTitle>
+          <DrawerTitle>Редактирование категории</DrawerTitle>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
           <Form {...form}>
@@ -80,12 +74,12 @@ export function BrandTableCellViewer({ item }: { item: Brand }) {
             >
               <FormField
                 control={form.control}
-                name='name'
+                name='label'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Название</FormLabel>
                     <FormControl>
-                      <Input placeholder='Zara' {...field} />
+                      <Input placeholder='платья вечерние' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -93,51 +87,23 @@ export function BrandTableCellViewer({ item }: { item: Brand }) {
               />
               <FormField
                 control={form.control}
-                name='description'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Описание</FormLabel>
+                    <FormLabel>Название на английском</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Input placeholder='dresses-evening' {...field} />
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='image'
-                render={({ field: { onChange, onBlur, name, ref } }) => (
-                  <FormItem>
-                    <FormLabel>Изображение</FormLabel>
-                    {item.imageUrl && (
-                      <div>
-                        <Image
-                          src={item.imageUrl}
-                          height={100}
-                          width={100}
-                          alt={item.name}
-                        />
-                      </div>
-                    )}
-                    <FormControl>
-                      <Input
-                        type='file'
-                        accept='image/*'
-                        onBlur={onBlur}
-                        name={name}
-                        ref={ref}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0] || null;
-                          onChange(file);
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription className='text-red-600'>
-                      ВНИМАНИЕ! При изменении изображения бренда, прошлое
-                      изображение исчезнет
+                    <FormDescription>
+                      Это перевод названия категории, для мужских категорий
+                      используйте букву m в начале, вместо пробелов используйте
+                      дефис -
+                      <br />
+                      рубашки мужские = mshirts
+                      <br />
+                      платья вечерние = dresses-evening
                     </FormDescription>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
