@@ -329,6 +329,22 @@ export const api = createApi({
         };
       },
     }),
+    updateColor: builder.mutation<
+      Color,
+      {
+        id: string;
+        name: string;
+        hex: string;
+      }
+    >({
+      query: (color) => {
+        return {
+          url: `/colors/${color.id}`,
+          method: 'PUT',
+          body: color,
+        };
+      },
+    }),
   }),
 });
 
@@ -351,4 +367,5 @@ export const {
   useUpdateBrandMutation,
   useUpdateCategoryMutation,
   useUpdateSizeMutation,
+  useUpdateColorMutation
 } = api;
