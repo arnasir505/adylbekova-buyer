@@ -1,17 +1,9 @@
 'use client';
 
 import { ComponentProps } from 'react';
-import {
-  IconCirclePlus,
-  IconDashboard,
-  IconHelp,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from '@tabler/icons-react';
+import { IconCirclePlus, IconDashboard, IconUsers } from '@tabler/icons-react';
 
 import { NavMain } from '@/components/nav-main';
-import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
 import {
   Sidebar,
@@ -58,23 +50,6 @@ const data = {
       icon: IconCirclePlus,
     },
   ],
-  navSecondary: [
-    {
-      title: 'Настройки',
-      url: '#',
-      icon: IconSettings,
-    },
-    {
-      title: 'Спросить',
-      url: '#',
-      icon: IconHelp,
-    },
-    {
-      title: 'Поиск',
-      url: '#',
-      icon: IconSearch,
-    },
-  ],
 };
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
@@ -99,7 +74,6 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className='mt-auto' />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={response?.user} />
