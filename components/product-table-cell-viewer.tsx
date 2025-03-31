@@ -1,17 +1,18 @@
 'use client';
 
-import { SiteHeader } from '@/components/site-header';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+
 import { Input } from '@/components/ui/input';
-import { MultiSelect } from '@/components/ui/multiSelect';
 import {
   Select,
   SelectContent,
@@ -19,42 +20,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+
+import { MultiSelect } from './ui/multiSelect';
+import { Product } from '@/types/products';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { productFormSchema as formSchema } from '@/lib/zod-schemas';
+import { z } from 'zod';
 import {
-  useCreateProductMutation,
-  useGetBrandsQuery,
-  useGetCategoriesQuery,
   useGetColorsQuery,
   useGetSizesQuery,
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+  useUpdateProductMutation,
 } from '@/store/api';
 import { GlobalError, ValidationError } from '@/types/errors';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
+import { Textarea } from './ui/textarea';
+import Image from 'next/image';
 import { toast } from 'sonner';
-import { z } from 'zod';
-import { productFormSchema as formSchema } from '@/lib/zod-schemas';
+import { Loader2 } from 'lucide-react';
 
-const NewProduct = () => {
+export function ProductTableCellViewer({ item }: { item: Product }) {
+  const isMobile = useIsMobile();
   const { data: colorsData } = useGetColorsQuery({});
   const { data: sizesData } = useGetSizesQuery({});
   const { data: brandsData } = useGetBrandsQuery({});
   const { data: categoriesData } = useGetCategoriesQuery({});
-  const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [updateProduct, { isLoading }] = useUpdateProductMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       images: null,
-      name: '',
-      description: '',
-      price: '',
-      discount: '',
-      material: '',
-      brand: '',
-      category: '',
-      colors: [],
-      sizes: [],
+      name: item.name,
+      description: item.description,
+      price: item.price.toString(),
+      discount: item.discount?.toString(),
+      material: item.material,
+      brand: item.brand._id,
+      category: item.category._id,
+      colors: item.colors.map((color) => color._id),
+      sizes: item.sizes.map((size) => size._id),
     },
   });
 
@@ -72,10 +87,8 @@ const NewProduct = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-      await createProduct(values).unwrap();
-      toast.success('Товар создан');
-      form.reset();
+      await updateProduct({ ...values, id: item._id }).unwrap();
+      toast.success('Товар успешно отредактирован');
     } catch (e) {
       const error = e as GlobalError | ValidationError;
       if (typeof error.data.error === 'string') {
@@ -92,10 +105,20 @@ const NewProduct = () => {
   };
 
   return (
-    <>
-      <SiteHeader title='Новый товар' />
-      <div className='w-full p-4'>
-        <div className='flex flex-col max-w-md gap-4 overflow-y-auto p-4'>
+    <Drawer direction={isMobile ? 'bottom' : 'right'}>
+      <DrawerTrigger asChild>
+        <Button
+          variant='link'
+          className='text-foreground w-fit px-0 text-left capitalize'
+        >
+          {item.name}
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className='gap-1'>
+          <DrawerTitle>Редактирование товара</DrawerTitle>
+        </DrawerHeader>
+        <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
           <Form {...form}>
             <form
               className='flex flex-col gap-4'
@@ -108,6 +131,17 @@ const NewProduct = () => {
                   render={({ field: { onChange, onBlur, name, ref } }) => (
                     <FormItem>
                       <FormLabel>Изображения</FormLabel>
+                      <div className='flex flex-wrap gap-2'>
+                        {item.imagesUrl.map((url) => (
+                          <Image
+                            key={url}
+                            src={url}
+                            width={150}
+                            height={200}
+                            alt={item.name}
+                          />
+                        ))}
+                      </div>
                       <FormControl>
                         <Input
                           type='file'
@@ -119,6 +153,10 @@ const NewProduct = () => {
                           onChange={(e) => onChange(e.target.files || null)}
                         />
                       </FormControl>
+                      <FormDescription className='text-red-600'>
+                        ВНИМАНИЕ! При изменении фотографий товара, прошлые
+                        фотографии исчезнут
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -209,6 +247,7 @@ const NewProduct = () => {
                     <FormItem>
                       <FormLabel>Размер</FormLabel>
                       <MultiSelect
+                        defaultValue={field.value}
                         options={sizesList}
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
@@ -227,6 +266,7 @@ const NewProduct = () => {
                     <FormItem>
                       <FormLabel>Цвет</FormLabel>
                       <MultiSelect
+                        defaultValue={field.value}
                         options={colorsList}
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
@@ -296,15 +336,22 @@ const NewProduct = () => {
                   />
                 </div>
               </div>
-              <Button type='submit' disabled={isLoading} className='rounded-lg'>
-                {isLoading ? <Loader2 className='animate-spin' /> : 'Создать'}
+              <Button type='submit' disabled={isLoading}>
+                {isLoading ? (
+                  <Loader2 className='animate-spin' />
+                ) : (
+                  'Редактировать'
+                )}
               </Button>
             </form>
           </Form>
         </div>
-      </div>
-    </>
+        <DrawerFooter>
+          <DrawerClose asChild>
+            <Button variant='outline'>Закрыть</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
-};
-
-export default NewProduct;
+}

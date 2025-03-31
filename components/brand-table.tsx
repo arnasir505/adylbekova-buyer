@@ -12,7 +12,7 @@ import { brandColumns } from './brandColumns';
 
 const BrandsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: brandsData, isLoading } = useGetBrandsQuery({});
+  const { data: brandsData, refetch, isLoading } = useGetBrandsQuery({});
 
   const table = useReactTable({
     data: brandsData?.brands || [],
@@ -24,9 +24,9 @@ const BrandsTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка брендов...</div>
+    <div>Загрузка таблицы брендов...</div>
   ) : (
-    <DataTable table={table} columns={brandColumns} />
+    <DataTable table={table} columns={brandColumns} refetch={refetch} />
   );
 };
 

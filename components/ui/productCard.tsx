@@ -5,7 +5,7 @@ import { Icon } from '@/iconpack';
 import Link from 'next/link';
 import { useAppDispatch } from '@/store';
 import { addToCart } from '@/store/cart/cartSlice';
-import { Product} from '@/types/products';
+import { Product } from '@/types/products';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,7 +82,7 @@ const ProductCard: FC<Props> = ({ product }) => {
         </p>
       </Link>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild disabled={loading}>
+        <DropdownMenuTrigger asChild disabled={loading || !product.isAvailable}>
           <Button className='w-full'>
             {loading ? (
               <>

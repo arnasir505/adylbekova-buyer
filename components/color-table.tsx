@@ -12,7 +12,7 @@ import { colorColumns } from './colorColumns';
 
 const ColorsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: colorData, isLoading } = useGetColorsQuery({});
+  const { data: colorData, refetch, isLoading } = useGetColorsQuery({});
 
   const table = useReactTable({
     data: colorData?.colors || [],
@@ -24,9 +24,9 @@ const ColorsTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка цветов...</div>
+    <div>Загрузка таблицы цветов...</div>
   ) : (
-    <DataTable table={table} columns={colorColumns} />
+    <DataTable table={table} columns={colorColumns} refetch={refetch} />
   );
 };
 

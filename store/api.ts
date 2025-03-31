@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '@/lib/constants';
-import { Product, ProductFields, ProductsResponse } from '@/types/products';
+import {
+  Product,
+  ProductFields,
+  ProductFieldsWithID,
+  ProductsResponse,
+} from '@/types/products';
 import { LoginResponse } from '@/types/user';
 import { Brand, BrandResponse } from '@/types/brands';
 import { Category, CategoryResponse } from '@/types/categories';
@@ -229,6 +234,45 @@ export const api = createApi({
         };
       },
     }),
+    updateProduct: builder.mutation<Product, ProductFieldsWithID>({
+      query: (product) => {
+        const formData = new FormData();
+        formData.append('name', product.name);
+        if (product.images) {
+          for (const file of product.images) {
+            formData.append('images', file);
+          }
+        }
+        if (product.description) {
+          formData.append('description', product.description);
+        }
+        formData.append('price', product.price);
+        if (product.discount) {
+          formData.append('discount', product.discount);
+        }
+        if (product.material) {
+          formData.append('material', product.material);
+        }
+        for (const size of product.sizes) {
+          formData.append('sizes', size);
+        }
+        for (const color of product.colors) {
+          formData.append('colors', color);
+        }
+        formData.append('brand', product.brand);
+        formData.append('category', product.category);
+        return {
+          url: `/products/${product.id}`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+    }),
+    toggleArchiveProduct: builder.mutation<Product, string>({
+      query: (id) => {
+        return { url: `/products/${id}`, method: 'PATCH' };
+      },
+    }),
   }),
 });
 
@@ -246,4 +290,6 @@ export const {
   useCreateSizeMutation,
   useCreateColorMutation,
   useLogoutMutation,
+  useUpdateProductMutation,
+  useToggleArchiveProductMutation,
 } = api;

@@ -1,4 +1,3 @@
-import { ProductTableCellViewer } from '@/components/table-cell-viewer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +12,55 @@ import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { ProductTableCellViewer } from '@/components/product-table-cell-viewer';
+import { useToggleArchiveProductMutation } from '@/store/api';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+const ProductActions: React.FC<{ productId: string; isAvailable: boolean }> = ({
+  productId,
+  isAvailable,
+}) => {
+  const [toggleArchiveProduct, { isLoading }] =
+    useToggleArchiveProductMutation();
+
+  const toggle = async () => {
+    try {
+      await toggleArchiveProduct(productId).unwrap();
+      toast.success('Успешно');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant='ghost'
+          className='data-[state=open]:bg-muted text-muted-foreground flex size-8'
+          size='icon'
+        >
+          <IconDotsVertical />
+          <span className='sr-only'>Открыть меню</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end' className='w-32'>
+        <DropdownMenuItem onClick={toggle} disabled={isLoading}>
+          {isLoading ? (
+            <Loader2 className='animate-spin' />
+          ) : isAvailable ? (
+            'В архив'
+          ) : (
+            'Убрать из архива'
+          )}
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant='destructive'>Удалить</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export const productColumns: ColumnDef<Product>[] = [
   {
@@ -104,24 +152,11 @@ export const productColumns: ColumnDef<Product>[] = [
   },
   {
     id: 'actions',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant='ghost'
-            className='data-[state=open]:bg-muted text-muted-foreground flex size-8'
-            size='icon'
-          >
-            <IconDotsVertical />
-            <span className='sr-only'>Открыть меню</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='w-32'>
-          <DropdownMenuItem>В архив</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant='destructive'>Удалить</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    cell: ({ row }) => (
+      <ProductActions
+        productId={row.original._id}
+        isAvailable={row.original.isAvailable}
+      />
     ),
   },
 ];

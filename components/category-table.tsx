@@ -12,7 +12,7 @@ import { categoryColumns } from './categoryColumns';
 
 const CategoriesTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: categoryData, isLoading } = useGetCategoriesQuery({});
+  const { data: categoryData, refetch, isLoading } = useGetCategoriesQuery({});
 
   const table = useReactTable({
     data: categoryData?.categories || [],
@@ -24,9 +24,9 @@ const CategoriesTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка категорий...</div>
+    <div>Загрузка таблицы категорий...</div>
   ) : (
-    <DataTable table={table} columns={categoryColumns} />
+    <DataTable table={table} columns={categoryColumns} refetch={refetch} />
   );
 };
 

@@ -12,7 +12,7 @@ import DataTable from '@/components/data-table';
 
 const ProductsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: productsData, isLoading } = useGetProductsQuery({});
+  const { data: productsData, refetch, isLoading } = useGetProductsQuery({});
 
   const table = useReactTable({
     data: productsData?.products || [],
@@ -24,9 +24,9 @@ const ProductsTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка товаров...</div>
+    <div>Загрузка таблицы товаров...</div>
   ) : (
-    <DataTable table={table} columns={productColumns} />
+    <DataTable table={table} columns={productColumns} refetch={refetch} />
   );
 };
 

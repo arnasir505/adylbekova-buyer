@@ -12,7 +12,7 @@ import { sizeColumns } from './sizeColumns';
 
 const SizesTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const { data: sizeData, isLoading } = useGetSizesQuery({});
+  const { data: sizeData, refetch, isLoading } = useGetSizesQuery({});
 
   const table = useReactTable({
     data: sizeData?.sizes || [],
@@ -24,9 +24,9 @@ const SizesTable = () => {
   });
 
   return isLoading ? (
-    <div>Загрузка размеров...</div>
+    <div>Загрузка таблицы размеров...</div>
   ) : (
-    <DataTable table={table} columns={sizeColumns} />
+    <DataTable table={table} columns={sizeColumns} refetch={refetch} />
   );
 };
 

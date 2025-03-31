@@ -101,7 +101,14 @@ const ProductDetails = () => {
           <CarouselNext className='right-3 opacity-90 size-10' />
         </Carousel>
       )}
-      <p className='text-xl text-copper mt-4'>${product?.price}</p>
+      <p className='text-copper text-xl mt-4'>
+        ${product && product?.price - (product?.discount ?? 0)}
+        {product?.discount && (
+          <span className='text-neutral-400 ms-2 line-through decoration-1'>
+            ${product?.price}
+          </span>
+        )}
+      </p>
       <p className='text-lg mt-3'>{product?.description}</p>
       <ul className='text-base mt-4'>
         <li>
@@ -138,7 +145,10 @@ const ProductDetails = () => {
       </h2>
       <div className='max-w-sm'>
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-          <DropdownMenuTrigger disabled={loading} asChild>
+          <DropdownMenuTrigger
+            disabled={loading || !product?.isAvailable}
+            asChild
+          >
             <Button className='w-full' size='xl'>
               {loading ? (
                 <>

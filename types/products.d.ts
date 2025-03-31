@@ -38,3 +38,7 @@ export interface ProductFields {
   brand: string;
   category: string;
 }
+
+export interface ProductFieldsWithID extends ProductFields {
+  id: string;
+}

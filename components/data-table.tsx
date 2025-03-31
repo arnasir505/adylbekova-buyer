@@ -18,11 +18,19 @@ import { Button } from '@/components/ui/button';
 interface DataTableProps<TData> {
   table: ReactTable<TData>;
   columns: ColumnDef<TData>[];
+  refetch: () => void;
 }
 
-const DataTable = <TData,>({ table, columns }: DataTableProps<TData>) => {
+const DataTable = <TData,>({
+  table,
+  columns,
+  refetch,
+}: DataTableProps<TData>) => {
   return (
     <div className='border rounded-lg overflow-hidden'>
+      <Button onClick={refetch} variant='outline' className='m-2 rounded-md'>
+        Обновить таблицу
+      </Button>
       <Table className='w-full'>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
