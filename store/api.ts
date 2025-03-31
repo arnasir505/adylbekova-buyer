@@ -273,6 +273,31 @@ export const api = createApi({
         return { url: `/products/${id}`, method: 'PATCH' };
       },
     }),
+    updateBrand: builder.mutation<
+      Brand,
+      {
+        name: string;
+        description?: string;
+        image?: File | null;
+        id: string;
+      }
+    >({
+      query: (brand) => {
+        const formData = new FormData();
+        formData.append('name', brand.name);
+        if (brand.description) {
+          formData.append('description', brand.description);
+        }
+        if (brand.image) {
+          formData.append('image', brand.image);
+        }
+        return {
+          url: `/brands/${brand.id}`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -292,4 +317,5 @@ export const {
   useLogoutMutation,
   useUpdateProductMutation,
   useToggleArchiveProductMutation,
+  useUpdateBrandMutation
 } = api;

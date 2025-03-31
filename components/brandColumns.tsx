@@ -10,6 +10,7 @@ import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { BrandTableCellViewer } from './brand-table-cell-viewer';
 
 export const brandColumns: ColumnDef<Brand>[] = [
   {
@@ -35,7 +36,7 @@ export const brandColumns: ColumnDef<Brand>[] = [
   {
     accessorKey: 'name',
     header: 'Название',
-    cell: ({ row }) => <div>{row.original.name}</div>,
+    cell: ({ row }) => <BrandTableCellViewer item={row.original} />,
   },
   {
     accessorKey: 'description',

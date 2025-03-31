@@ -114,7 +114,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
           {item.name}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent aria-describedby={undefined}>
         <DrawerHeader className='gap-1'>
           <DrawerTitle>Редактирование товара</DrawerTitle>
         </DrawerHeader>
@@ -337,11 +337,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
                 </div>
               </div>
               <Button type='submit' disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className='animate-spin' />
-                ) : (
-                  'Редактировать'
-                )}
+                {isLoading ? <Loader2 className='animate-spin' /> : 'Сохранить'}
               </Button>
             </form>
           </Form>
