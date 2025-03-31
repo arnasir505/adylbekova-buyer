@@ -9,12 +9,13 @@ import { Size } from '@/types/sizes';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
+import { SizeTableCellViewer } from './size-table-cell-viewer';
 
 export const sizeColumns: ColumnDef<Size>[] = [
   {
     accessorKey: 'value',
     header: 'Размер',
-    cell: ({ row }) => <div>{row.original.value}</div>,
+    cell: ({ row }) => <SizeTableCellViewer item={row.original} />,
   },
   {
     accessorKey: 'createdAt',

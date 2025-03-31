@@ -314,6 +314,21 @@ export const api = createApi({
         };
       },
     }),
+    updateSize: builder.mutation<
+      Size,
+      {
+        id: string;
+        value: string;
+      }
+    >({
+      query: (size) => {
+        return {
+          url: `/sizes/${size.id}`,
+          method: 'PUT',
+          body: size,
+        };
+      },
+    }),
   }),
 });
 
@@ -335,4 +350,5 @@ export const {
   useToggleArchiveProductMutation,
   useUpdateBrandMutation,
   useUpdateCategoryMutation,
+  useUpdateSizeMutation,
 } = api;
