@@ -55,7 +55,7 @@ const ProductCard: FC<Props> = ({ product }) => {
   }, [selectedSize, selectedColor, dispatch, product]);
 
   return (
-    <div className='min-w-[171px]'>
+    <div className='min-w-[171px] flex flex-col justify-between'>
       <Link href={`/product/${product._id}`}>
         <div className='bg-product-bg h-[228px] relative'>
           {product.imagesUrl[0] && (
