@@ -22,6 +22,8 @@ export const cormorantGaramond = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: 'Adylbekova Buyer',
   description: 'Luxury replicas of premium brands',
+  keywords: 'best replicas, luxury, brand, clothes',
+  robots: 'index, follow',
 };
 
 export default function RootLayout({

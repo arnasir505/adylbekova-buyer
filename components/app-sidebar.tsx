@@ -90,7 +90,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
             >
               <a href='#'>
                 <span className='text-base font-semibold'>
-                  Abyldekoba Buyer
+                  Adylbekova Buyer
                 </span>
               </a>
             </SidebarMenuButton>
