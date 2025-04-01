@@ -38,8 +38,10 @@ export default function RootLayout({
           className={`${tenorSans.variable} ${cormorantGaramond.variable} font-tenor antialiased bg-body pb-5`}
         >
           <main className='max-w-6xl mx-auto px-5'>
-            <Navbar />
-            <Suspense>{children}</Suspense>
+            <Suspense>
+              <Navbar />
+              {children}
+            </Suspense>
           </main>
           <Toaster position='top-center' />
           <Footer />
