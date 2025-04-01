@@ -6,7 +6,7 @@ import {
   ProductFieldsWithID,
   ProductsResponse,
 } from '@/types/products';
-import { LoginResponse } from '@/types/user';
+import { LoginResponse, UsersResponse } from '@/types/user';
 import { Brand, BrandResponse } from '@/types/brands';
 import { Category, CategoryResponse } from '@/types/categories';
 import { Size, SizeResponse } from '@/types/sizes';
@@ -119,6 +119,14 @@ export const api = createApi({
         colors: response.colors,
         totalPages: response.totalPages,
       }),
+    }),
+    getUsers: builder.query<UsersResponse, { page?: number; limit?: number }>({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+        return `/users?${params.toString()}`;
+      },
     }),
     login: builder.mutation<LoginResponse, { email: string; password: string }>(
       {
@@ -351,21 +359,22 @@ export const api = createApi({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
-  useLoginMutation,
   useGetBrandsQuery,
   useGetCategoriesQuery,
   useGetSizesQuery,
   useGetColorsQuery,
+  useGetUsersQuery,
   useCreateProductMutation,
   useCreateBrandMutation,
   useCreateCategoryMutation,
   useCreateSizeMutation,
   useCreateColorMutation,
+  useLoginMutation,
   useLogoutMutation,
   useUpdateProductMutation,
   useToggleArchiveProductMutation,
   useUpdateBrandMutation,
   useUpdateCategoryMutation,
   useUpdateSizeMutation,
-  useUpdateColorMutation
+  useUpdateColorMutation,
 } = api;

@@ -6,6 +6,7 @@ export interface User {
   role: 'admin' | 'manager';
   createdAt: string;
   updatedAt: string;
+  isBanned: boolean;
 }
 
 export interface LoginResponse {
@@ -15,4 +16,9 @@ export interface LoginResponse {
 
 export interface UsersState {
   user: LoginResponse | null;
+}
+
+export interface UsersResponse {
+  users: User[];
+  totalPages: number;
 }

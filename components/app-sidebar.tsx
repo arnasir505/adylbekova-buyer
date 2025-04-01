@@ -26,7 +26,7 @@ const data = {
     },
     {
       title: 'Команда',
-      url: '#',
+      url: '/admin/users',
       icon: IconUsers,
     },
     {
