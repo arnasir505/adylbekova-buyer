@@ -61,10 +61,7 @@ export function BrandTableCellViewer({ item }: { item: Brand }) {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
       <DrawerTrigger asChild>
-        <Button
-          variant='link'
-          className='text-foreground w-fit px-0 text-left'
-        >
+        <Button variant='link' className='text-foreground w-fit px-0 text-left'>
           {item.name}
         </Button>
       </DrawerTrigger>
@@ -149,7 +146,9 @@ export function BrandTableCellViewer({ item }: { item: Brand }) {
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant='outline'>Закрыть</Button>
+            <Button variant='outline' className='rounded-lg'>
+              Закрыть
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

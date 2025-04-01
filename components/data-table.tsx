@@ -72,6 +72,7 @@ const DataTable = <TData,>({
       <div className='flex justify-end gap-3 items-center p-4 border-t'>
         <Button
           variant='outline'
+          className='rounded-lg'
           disabled={!table.getCanPreviousPage()}
           onClick={() => table.previousPage()}
         >
@@ -83,6 +84,7 @@ const DataTable = <TData,>({
         </span>
         <Button
           variant='outline'
+          className='rounded-lg'
           disabled={!table.getCanNextPage()}
           onClick={() => table.nextPage()}
         >

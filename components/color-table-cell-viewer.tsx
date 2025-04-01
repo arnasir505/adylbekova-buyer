@@ -111,7 +111,9 @@ export function ColorTableCellViewer({ item }: { item: Color }) {
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant='outline'>Закрыть</Button>
+            <Button variant='outline' className='rounded-lg'>
+              Закрыть
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

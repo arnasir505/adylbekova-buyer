@@ -91,7 +91,7 @@ export function SizeTableCellViewer({ item }: { item: Size }) {
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant='outline'>Закрыть</Button>
+            <Button variant='outline' className='rounded-lg'>Закрыть</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

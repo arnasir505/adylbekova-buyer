@@ -336,7 +336,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
                   />
                 </div>
               </div>
-              <Button type='submit' disabled={isLoading}>
+              <Button type='submit' className='rounded-lg' disabled={isLoading}>
                 {isLoading ? <Loader2 className='animate-spin' /> : 'Сохранить'}
               </Button>
             </form>
@@ -344,7 +344,7 @@ export function ProductTableCellViewer({ item }: { item: Product }) {
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant='outline'>Закрыть</Button>
+            <Button variant='outline' className='rounded-lg'>Закрыть</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
