@@ -40,6 +40,7 @@ export const baseQueryWithReauth: typeof baseQuery = async (
       api.dispatch(updateState(refreshResult.data as LoginResponse));
       result = await baseQuery(args, api, extraOptions);
     } else {
+      localStorage.removeItem('user');
       api.dispatch(unsetUser());
     }
   }

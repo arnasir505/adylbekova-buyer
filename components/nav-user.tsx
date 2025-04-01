@@ -32,6 +32,7 @@ export function NavUser({ user }: { user: User | undefined }) {
   const handleLogout = async () => {
     try {
       const response = await logout().unwrap();
+      localStorage.removeItem('user');
       dispatch(unsetUser());
       router.replace('/admin/login');
       console.log(response);
