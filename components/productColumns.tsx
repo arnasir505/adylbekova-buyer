@@ -16,8 +16,9 @@ import { ProductTableCellViewer } from '@/components/product-table-cell-viewer';
 import { useToggleArchiveProductMutation } from '@/store/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { FC } from 'react';
 
-const ProductActions: React.FC<{ productId: string; isAvailable: boolean }> = ({
+const ProductActions: FC<{ productId: string; isAvailable: boolean }> = ({
   productId,
   isAvailable,
 }) => {
@@ -84,6 +85,13 @@ export const productColumns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
+    id: 'manager',
+    accessorKey: 'name',
+    header: 'Название',
+    cell: ({ row }) => <div className='py-2'>{row.original.name}</div>,
+  },
+  {
+    id: 'admin',
     accessorKey: 'name',
     header: 'Название',
     cell: ({ row }) => <ProductTableCellViewer item={row.original} />,

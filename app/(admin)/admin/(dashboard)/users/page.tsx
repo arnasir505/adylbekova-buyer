@@ -23,7 +23,7 @@ const Page = () => {
       <SiteHeader title='Таблица пользователей' />
       <div className='flex flex-1 flex-col'>
         <div className='@container/main p-4'>
-          <UsersTable />
+          <UsersTable isManager={user.role === 'manager'} />
         </div>
       </div>
     </>

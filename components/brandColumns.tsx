@@ -34,9 +34,16 @@ export const brandColumns: ColumnDef<Brand>[] = [
     enableHiding: false,
   },
   {
+    id: 'admin',
     accessorKey: 'name',
     header: 'Название',
     cell: ({ row }) => <BrandTableCellViewer item={row.original} />,
+  },
+  {
+    id: 'manager',
+    accessorKey: 'name',
+    header: 'Название',
+    cell: ({ row }) => <div className='py-1'>{row.original.name}</div>,
   },
   {
     accessorKey: 'description',

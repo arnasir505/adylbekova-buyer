@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useGetUsersQuery } from '@/store/api';
 import {
   useReactTable,
@@ -10,13 +10,21 @@ import {
 import DataTable from '@/components/data-table';
 import { userColumns } from './userColumns';
 
-const UsersTable = () => {
+const UsersTable: FC<{ isManager: boolean }> = ({ isManager }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const { data: usersData, refetch, isLoading } = useGetUsersQuery({});
 
+  const filteredColumns = userColumns.filter((col) => {
+    if (isManager) {
+      return col.id !== 'actions' && col.id !== 'admin';
+    } else {
+      return col.id !== 'manager';
+    }
+  });
+
   const table = useReactTable({
     data: usersData?.users || [],
-    columns: userColumns,
+    columns: filteredColumns,
     state: { pagination },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -26,7 +34,7 @@ const UsersTable = () => {
   return isLoading ? (
     <div>Загрузка таблицы пользователей...</div>
   ) : (
-    <DataTable table={table} columns={userColumns} refetch={refetch} />
+    <DataTable table={table} columns={filteredColumns} refetch={refetch} />
   );
 };
 

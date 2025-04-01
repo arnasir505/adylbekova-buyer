@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useGetBrandsQuery } from '@/store/api';
 import {
   useReactTable,
@@ -10,13 +10,21 @@ import {
 import DataTable from '@/components/data-table';
 import { brandColumns } from './brandColumns';
 
-const BrandsTable = () => {
+const BrandsTable: FC<{ isManager: boolean }> = ({ isManager }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const { data: brandsData, refetch, isLoading } = useGetBrandsQuery({});
 
+  const filteredColumns = brandColumns.filter((col) => {
+    if (isManager) {
+      return col.id !== 'actions' && col.id !== 'admin';
+    } else {
+      return col.id !== 'manager';
+    }
+  });
+
   const table = useReactTable({
     data: brandsData?.brands || [],
-    columns: brandColumns,
+    columns: filteredColumns,
     state: { pagination },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -26,7 +34,7 @@ const BrandsTable = () => {
   return isLoading ? (
     <div>Загрузка таблицы брендов...</div>
   ) : (
-    <DataTable table={table} columns={brandColumns} refetch={refetch} />
+    <DataTable table={table} columns={filteredColumns} refetch={refetch} />
   );
 };
 

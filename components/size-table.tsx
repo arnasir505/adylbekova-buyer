@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useGetSizesQuery } from '@/store/api';
 import {
   useReactTable,
@@ -10,13 +10,21 @@ import {
 import DataTable from '@/components/data-table';
 import { sizeColumns } from './sizeColumns';
 
-const SizesTable = () => {
+const SizesTable: FC<{ isManager: boolean }> = ({ isManager }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const { data: sizeData, refetch, isLoading } = useGetSizesQuery({});
 
+  const filteredColumns = sizeColumns.filter((col) => {
+    if (isManager) {
+      return col.id !== 'actions' && col.id !== 'admin';
+    } else {
+      return col.id !== 'manager';
+    }
+  });
+
   const table = useReactTable({
     data: sizeData?.sizes || [],
-    columns: sizeColumns,
+    columns: filteredColumns,
     state: { pagination },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -26,7 +34,7 @@ const SizesTable = () => {
   return isLoading ? (
     <div>Загрузка таблицы размеров...</div>
   ) : (
-    <DataTable table={table} columns={sizeColumns} refetch={refetch} />
+    <DataTable table={table} columns={filteredColumns} refetch={refetch} />
   );
 };
 

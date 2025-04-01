@@ -13,9 +13,16 @@ import { CategoryTableCellViewer } from './category-table-cell-viewer';
 
 export const categoryColumns: ColumnDef<Category>[] = [
   {
+    id: 'admin',
     accessorKey: 'label',
     header: 'Название',
     cell: ({ row }) => <CategoryTableCellViewer item={row.original} />,
+  },
+  {
+    id: 'manager',
+    accessorKey: 'label',
+    header: 'Название',
+    cell: ({ row }) => <div className='py-1'>{row.original.label}</div>,
   },
   {
     accessorKey: 'name',

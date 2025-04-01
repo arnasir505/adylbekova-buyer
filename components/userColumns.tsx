@@ -20,7 +20,7 @@ export const userColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'name',
     header: 'Имя',
-    cell: ({ row }) => <div>{row.original.name}</div>,
+    cell: ({ row }) => <div className='py-2'>{row.original.name}</div>,
   },
   {
     accessorKey: 'email',

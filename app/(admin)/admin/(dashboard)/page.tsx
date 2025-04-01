@@ -33,6 +33,8 @@ const Dashboard = () => {
 
   if (!user) return <div className='text-center py-10'>Загрузка...</div>;
 
+  const isManager = user.role === 'manager';
+
   return (
     <>
       <SiteHeader title='Панель управления' />
@@ -66,19 +68,23 @@ const Dashboard = () => {
             </div>
 
             <TabsContent value='products'>
-              {activeTab === 'products' && <ProductsTable />}
+              {activeTab === 'products' && (
+                <ProductsTable isManager={isManager} />
+              )}
             </TabsContent>
             <TabsContent value='brands'>
-              {activeTab === 'brands' && <BrandsTable />}
+              {activeTab === 'brands' && <BrandsTable isManager={isManager} />}
             </TabsContent>
             <TabsContent value='categories'>
-              {activeTab === 'categories' && <CategoriesTable />}
+              {activeTab === 'categories' && (
+                <CategoriesTable isManager={isManager} />
+              )}
             </TabsContent>
             <TabsContent value='sizes'>
-              {activeTab === 'sizes' && <SizesTable />}
+              {activeTab === 'sizes' && <SizesTable isManager={isManager} />}
             </TabsContent>
             <TabsContent value='colors'>
-              {activeTab === 'colors' && <ColorsTable />}
+              {activeTab === 'colors' && <ColorsTable isManager={isManager} />}
             </TabsContent>
           </Tabs>
         </div>
