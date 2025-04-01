@@ -10,6 +10,7 @@ import { Separator } from '../icons/Separator';
 import { ShoppingBag } from '../icons/ShoppingBag';
 import { StarCheck } from '../icons/StarCheck';
 import { StartDuoTone } from '../icons/StartDuoTone';
+import { Telegram } from '../icons/Telegram';
 import { Tiktok } from '../icons/Tiktok';
 
 export const iconMap = {
@@ -26,4 +27,5 @@ export const iconMap = {
   starCheck: StarCheck,
   starDuoTone: StartDuoTone,
   arrowUpRight: ArrowUpRight,
+  telegram: Telegram,
 } as const;
