@@ -18,17 +18,18 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { FC } from 'react';
 
-const ProductActions: FC<{ productId: string; isAvailable: boolean }> = ({
-  productId,
-  isAvailable,
-}) => {
+const ProductActions: FC<{ item: Product }> = ({ item }) => {
   const [toggleArchiveProduct, { isLoading }] =
     useToggleArchiveProductMutation();
 
   const toggle = async () => {
     try {
-      await toggleArchiveProduct(productId).unwrap();
-      toast.success('Успешно');
+      const product = await toggleArchiveProduct(item._id).unwrap();
+      toast.success(
+        product.isAvailable
+          ? `Товар ${item.name} снова доступен`
+          : `Товар ${item.name} помещен в архив`
+      );
     } catch (e) {
       console.log(e);
     }
@@ -50,7 +51,7 @@ const ProductActions: FC<{ productId: string; isAvailable: boolean }> = ({
         <DropdownMenuItem onClick={toggle} disabled={isLoading}>
           {isLoading ? (
             <Loader2 className='animate-spin' />
-          ) : isAvailable ? (
+          ) : item.isAvailable ? (
             'В архив'
           ) : (
             'Убрать из архива'
@@ -160,11 +161,6 @@ export const productColumns: ColumnDef<Product>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
-      <ProductActions
-        productId={row.original._id}
-        isAvailable={row.original.isAvailable}
-      />
-    ),
+    cell: ({ row }) => <ProductActions item={row.original} />,
   },
 ];

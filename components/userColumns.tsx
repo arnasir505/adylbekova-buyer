@@ -10,6 +10,57 @@ import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { User } from '@/types/user';
 import { Badge } from './ui/badge';
+import { FC } from 'react';
+import { useToggleBanUserMutation } from '@/store/api';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
+
+const UserActions: FC<{ item: User }> = ({ item }) => {
+  const [toggleBanUser, { isLoading }] = useToggleBanUserMutation();
+
+  const toggle = async () => {
+    try {
+      const user = await toggleBanUser(item._id).unwrap();
+      toast.success(
+        user.isBanned
+          ? `Менеджер ${item.name} заблокирован`
+          : `Менеджер ${item.name} разблокирован`
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant='ghost'
+          className='data-[state=open]:bg-muted text-muted-foreground flex size-8'
+          size='icon'
+        >
+          <IconDotsVertical />
+          <span className='sr-only'>Открыть меню</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end' className='w-32'>
+        <DropdownMenuItem
+          variant='destructive'
+          onClick={toggle}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <Loader2 className='animate-spin' />
+          ) : item.isBanned ? (
+            'Разблокировать'
+          ) : (
+            'Заблокировать'
+          )}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export const userColumns: ColumnDef<User>[] = [
   {
@@ -60,24 +111,6 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     id: 'actions',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant='ghost'
-            className='data-[state=open]:bg-muted text-muted-foreground flex size-8'
-            size='icon'
-          >
-            <IconDotsVertical />
-            <span className='sr-only'>Открыть меню</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='w-32'>
-          <DropdownMenuItem variant='destructive'>
-            Заблокировать
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => <UserActions item={row.original} />,
   },
 ];

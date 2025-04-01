@@ -26,7 +26,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('products');
 
   useEffect(() => {
-    if (!user || !['admin', 'manager'].includes(user.role)) {
+    if (!user || !['admin', 'manager'].includes(user.role) || user.isBanned) {
       router.replace('/admin/login');
     }
   }, [user, router]);

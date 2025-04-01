@@ -250,6 +250,11 @@ export const api = createApi({
         return { url: '/users/register', method: 'POST', body: user };
       },
     }),
+    toggleBanUser: builder.mutation<User, string>({
+      query: (id) => {
+        return { url: `/users/${id}`, method: 'PATCH' };
+      },
+    }),
     updateProduct: builder.mutation<Product, ProductFieldsWithID>({
       query: (product) => {
         const formData = new FormData();
@@ -378,6 +383,7 @@ export const {
   useCreateSizeMutation,
   useCreateColorMutation,
   useCreateUserMutation,
+  useToggleBanUserMutation,
   useLoginMutation,
   useLogoutMutation,
   useUpdateProductMutation,

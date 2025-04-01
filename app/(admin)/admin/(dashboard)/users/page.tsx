@@ -12,7 +12,7 @@ const Page = () => {
   const { user } = useAppSelector(selectUser) || {};
 
   useEffect(() => {
-    if (!user || !['admin', 'manager'].includes(user.role)) {
+    if (!user || !['admin', 'manager'].includes(user.role) || user.isBanned) {
       router.replace('/admin/login');
     }
   }, [user, router]);
