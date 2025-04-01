@@ -86,3 +86,13 @@ export const loginFormSchema = z.object({
     .email('Некорректный email'),
   password: z.string().min(1, { message: 'Введите пароль' }),
 });
+
+export const userFormSchema = z.object({
+  name: z.string().min(1, { message: 'Введите имя' }),
+  email: z
+    .string()
+    .min(1, { message: 'Введите email' })
+    .email('Некорректный email'),
+  password: z.string().min(1, { message: 'Введите пароль' }),
+  phone: z.string().min(1, { message: 'Введите номер телефона' }),
+});

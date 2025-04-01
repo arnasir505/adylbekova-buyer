@@ -6,7 +6,7 @@ import {
   ProductFieldsWithID,
   ProductsResponse,
 } from '@/types/products';
-import { LoginResponse, UsersResponse } from '@/types/user';
+import { LoginResponse, User, UsersResponse } from '@/types/user';
 import { Brand, BrandResponse } from '@/types/brands';
 import { Category, CategoryResponse } from '@/types/categories';
 import { Size, SizeResponse } from '@/types/sizes';
@@ -242,6 +242,14 @@ export const api = createApi({
         };
       },
     }),
+    createUser: builder.mutation<
+      User,
+      { name: string; email: string; password: string; phone: string }
+    >({
+      query: (user) => {
+        return { url: '/users/register', method: 'POST', body: user };
+      },
+    }),
     updateProduct: builder.mutation<Product, ProductFieldsWithID>({
       query: (product) => {
         const formData = new FormData();
@@ -369,6 +377,7 @@ export const {
   useCreateCategoryMutation,
   useCreateSizeMutation,
   useCreateColorMutation,
+  useCreateUserMutation,
   useLoginMutation,
   useLogoutMutation,
   useUpdateProductMutation,

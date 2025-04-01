@@ -49,6 +49,11 @@ const data = {
       url: '/admin/new-color',
       icon: IconCirclePlus,
     },
+    {
+      title: 'Добавить менеджера',
+      url: '/admin/new-user',
+      icon: IconCirclePlus,
+    },
   ],
 };
 

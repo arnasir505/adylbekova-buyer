@@ -15,7 +15,7 @@ export const userColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'number',
     header: '#',
-    cell: ({ row }) => <div>{row.id}</div>,
+    cell: ({ row }) => <div>{Number(row.id) + 1}</div>,
   },
   {
     accessorKey: 'name',
@@ -36,7 +36,9 @@ export const userColumns: ColumnDef<User>[] = [
     accessorKey: 'role',
     header: 'Роль',
     cell: ({ row }) => (
-      <Badge className='capitalize'>{row.original.role}</Badge>
+      <Badge variant='outline'>
+        {row.original.role === 'manager' ? 'Менеджер' : 'Админ'}
+      </Badge>
     ),
   },
   {
