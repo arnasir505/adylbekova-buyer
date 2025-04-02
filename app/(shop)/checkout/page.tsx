@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useAppSelector } from '@/store';
-import { selectCartItems } from '@/store/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { clearCart, selectCartItems } from '@/store/cart/cartSlice';
 import { OrderFields } from '@/types/order';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -22,8 +22,11 @@ import { orderFormSchema as formSchema } from '@/lib/zod-schemas';
 import { useCreateOrderMutation } from '@/store/api';
 import { GlobalError } from '@/types/errors';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Checkout = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCartItems);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
@@ -53,7 +56,8 @@ const Checkout = () => {
         products,
       };
       const response = await createOrder(orderFields).unwrap();
-      console.log(response);
+      dispatch(clearCart());
+      router.push(`/checkout/confirmation?orderNumber=${response.orderNumber}`);
     } catch (e) {
       const error = e as GlobalError;
       form.setError('orderDetails', { message: error.data.error });
