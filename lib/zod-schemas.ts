@@ -96,3 +96,18 @@ export const userFormSchema = z.object({
   password: z.string().min(1, { message: 'Введите пароль' }),
   phone: z.string().min(1, { message: 'Введите номер телефона' }),
 });
+
+export const orderFormSchema = z.object({
+  firstName: z.string().min(1, { message: 'Введите имя.' }).max(50),
+  email: z
+    .string()
+    .min(1, { message: 'Введите email.' })
+    .email({ message: 'Неверный email.' }),
+  country: z.string().min(1, { message: 'Выберите страну.' }),
+  city: z.string().min(1, { message: 'Введите город.' }),
+  address: z.string().min(1, { message: 'Введите адрес.' }),
+  phone: z.string().min(1, { message: 'Введите номер.' }),
+  orderDetails: z
+    .string()
+    .max(400, { message: 'Превышено максимальное количество символов.' }),
+});

@@ -5,8 +5,8 @@ import { Order } from '@/types/order';
 export const orderColumns: ColumnDef<Order>[] = [
   {
     accessorKey: 'number',
-    header: '#',
-    cell: ({ row }) => <div>{Number(row.id) + 1}</div>,
+    header: '# Номер заказа',
+    cell: ({ row }) => <div>{row.original.orderNumber}</div>,
   },
   {
     accessorKey: 'name',
@@ -37,6 +37,11 @@ export const orderColumns: ColumnDef<Order>[] = [
     accessorKey: 'totalPrice',
     header: 'Сумма',
     cell: ({ row }) => <div>${row.original.totalPrice}</div>,
+  },
+  {
+    accessorKey: 'manager',
+    header: 'Менеджер',
+    cell: ({ row }) => <div>{row.original.manager.name}</div>,
   },
   {
     accessorKey: 'status',

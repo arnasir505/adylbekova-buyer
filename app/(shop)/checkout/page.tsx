@@ -13,30 +13,20 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAppSelector } from '@/store';
-import { selectCartItems, selectCartItemsTotal, selectCartItemsTotalPrice } from '@/store/cart/cartSlice';
+import { selectCartItems } from '@/store/cart/cartSlice';
+import { OrderFields } from '@/types/order';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: 'Введите имя.' }).max(50),
-  email: z
-    .string()
-    .min(1, { message: 'Введите email.' })
-    .email({ message: 'Неверный email.' }),
-  country: z.string().min(1, { message: 'Выберите страну.' }),
-  city: z.string().min(1, { message: 'Введите город.' }),
-  address: z.string().min(1, { message: 'Введите адрес.' }),
-  phone: z.string().min(1, { message: 'Введите номер.' }),
-  orderDetails: z
-    .string()
-    .max(400, { message: 'Превышено максимальное количество символов.' }),
-});
+import { orderFormSchema as formSchema } from '@/lib/zod-schemas';
+import { useCreateOrderMutation } from '@/store/api';
+import { GlobalError } from '@/types/errors';
+import { Loader2 } from 'lucide-react';
 
 const Checkout = () => {
   const cart = useAppSelector(selectCartItems);
-  const totalItems = useAppSelector(selectCartItemsTotal);
-  const totalPrice = useAppSelector(selectCartItemsTotalPrice)
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,9 +40,25 @@ const Checkout = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ order: values, cart: {items: cart, totalItems, totalPrice} });
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const products = cart.map((item) => ({
+        product: item.product._id,
+        quantity: item.quantity,
+        size: item.size._id,
+        color: item.color._id,
+      }));
+      const orderFields: OrderFields = {
+        ...values,
+        products,
+      };
+      const response = await createOrder(orderFields).unwrap();
+      console.log(response);
+    } catch (e) {
+      const error = e as GlobalError;
+      form.setError('orderDetails', { message: error.data.error });
+    }
+  };
 
   return (
     <>
@@ -155,8 +161,17 @@ const Checkout = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' size='lg' className='w-full rounded-md'>
-                Подтвердить заказ
+              <Button
+                type='submit'
+                size='lg'
+                className='w-full rounded-md'
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 className='animate-spin' />
+                ) : (
+                  'Подтвердить заказ'
+                )}
               </Button>
             </form>
           </Form>

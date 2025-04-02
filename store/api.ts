@@ -13,7 +13,7 @@ import { Size, SizeResponse } from '@/types/sizes';
 import { Color, ColorResponse } from '@/types/colors';
 import { RootState } from '@/store';
 import { unsetUser, updateState } from './user/userSlice';
-import { Order } from '@/types/order';
+import { Order, OrderFields } from '@/types/order';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -254,6 +254,11 @@ export const api = createApi({
         return { url: '/users/register', method: 'POST', body: user };
       },
     }),
+    createOrder: builder.mutation<Order, OrderFields>({
+      query: (orderFields) => {
+        return { url: '/orders', method: 'POST', body: orderFields };
+      },
+    }),
     toggleBanUser: builder.mutation<User, string>({
       query: (id) => {
         return { url: `/users/${id}`, method: 'PATCH' };
@@ -388,6 +393,7 @@ export const {
   useCreateSizeMutation,
   useCreateColorMutation,
   useCreateUserMutation,
+  useCreateOrderMutation,
   useToggleBanUserMutation,
   useLoginMutation,
   useLogoutMutation,

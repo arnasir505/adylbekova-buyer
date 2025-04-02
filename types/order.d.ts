@@ -1,7 +1,7 @@
-import { CartState } from './cart';
 import { User } from './user';
+import { CartItem } from './cart';
 
-export interface Order extends CartState {
+export interface Order {
   _id: string;
   manager: User;
   orderNumber: string;
@@ -13,6 +13,9 @@ export interface Order extends CartState {
   phone: string;
   orderDetails?: string;
   notes?: string;
+  products: CartItem[];
+  totalPrice: number;
+  totalItems: number;
   status:
     | 'pending'
     | 'paid'
@@ -22,4 +25,20 @@ export interface Order extends CartState {
     | 'canceled';
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface OrderFields {
+  firstName: string;
+  email: string;
+  country: string;
+  city: string;
+  address: string;
+  phone: string;
+  orderDetails?: string;
+  products: {
+    product: string;
+    quantity: number;
+    size: string;
+    color: string;
+  }[];
 }
