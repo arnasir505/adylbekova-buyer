@@ -1,7 +1,12 @@
 'use client';
 
 import { ComponentProps } from 'react';
-import { IconCirclePlus, IconDashboard, IconUsers } from '@tabler/icons-react';
+import {
+  IconCirclePlus,
+  IconDashboard,
+  IconTruckDelivery,
+  IconUsers,
+} from '@tabler/icons-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -27,6 +32,11 @@ const adminNav = [
     title: 'Команда',
     url: '/admin/users',
     icon: IconUsers,
+  },
+  {
+    title: 'Заказы',
+    url: '/admin/orders',
+    icon: IconTruckDelivery,
   },
   {
     title: 'Создать бренд',

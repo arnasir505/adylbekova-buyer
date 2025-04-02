@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useAppSelector } from '@/store';
+import { selectCartItems, selectCartItemsTotal, selectCartItemsTotalPrice } from '@/store/cart/cartSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -32,6 +34,9 @@ const formSchema = z.object({
 });
 
 const Checkout = () => {
+  const cart = useAppSelector(selectCartItems);
+  const totalItems = useAppSelector(selectCartItemsTotal);
+  const totalPrice = useAppSelector(selectCartItemsTotalPrice)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +51,7 @@ const Checkout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log({ order: values, cart: {items: cart, totalItems, totalPrice} });
   }
 
   return (
@@ -100,7 +105,7 @@ const Checkout = () => {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Город</FormLabel>
+                    <FormLabel>Город / Село</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -156,7 +161,6 @@ const Checkout = () => {
             </form>
           </Form>
         </div>
-
       </div>
     </>
   );

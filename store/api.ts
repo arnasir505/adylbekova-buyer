@@ -13,6 +13,7 @@ import { Size, SizeResponse } from '@/types/sizes';
 import { Color, ColorResponse } from '@/types/colors';
 import { RootState } from '@/store';
 import { unsetUser, updateState } from './user/userSlice';
+import { Order } from '@/types/order';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -130,6 +131,7 @@ export const api = createApi({
         return `/users?${params.toString()}`;
       },
     }),
+    getOrders: builder.query<Order[], void>({ query: () => '/orders' }),
     login: builder.mutation<LoginResponse, { email: string; password: string }>(
       {
         query: (credentials) => ({
@@ -379,6 +381,7 @@ export const {
   useGetSizesQuery,
   useGetColorsQuery,
   useGetUsersQuery,
+  useGetOrdersQuery,
   useCreateProductMutation,
   useCreateBrandMutation,
   useCreateCategoryMutation,
