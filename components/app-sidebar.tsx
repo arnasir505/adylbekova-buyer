@@ -76,6 +76,11 @@ const managerNav = [
     url: '/admin/users',
     icon: IconUsers,
   },
+  {
+    title: 'Заказы',
+    url: '/admin/orders',
+    icon: IconTruckDelivery,
+  },
 ];
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {

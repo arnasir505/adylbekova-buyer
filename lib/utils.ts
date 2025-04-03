@@ -1,3 +1,4 @@
+import { Order } from '@/types/order';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -15,4 +16,25 @@ export const s3Loader = ({
   quality?: number;
 }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
+};
+
+export const translateOrderStatus: (status: Order['status']) => string = (
+  status
+) => {
+  switch (status) {
+    case 'pending':
+      return 'В ожидании';
+    case 'paid':
+      return 'Оплачено';
+    case 'processing':
+      return 'В обработке';
+    case 'completed':
+      return 'Завершен';
+    case 'failed':
+      return 'Ошибка';
+    case 'canceled':
+      return 'Отменен';
+    default:
+      return 'Неизвестный статус';
+  }
 };
