@@ -72,7 +72,7 @@ const NewUser = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input type='email' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -85,7 +85,7 @@ const NewUser = () => {
                   <FormItem>
                     <FormLabel>Номер телефона</FormLabel>
                     <FormControl>
-                      <Input type='number' {...field} />
+                      <Input type='tel' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

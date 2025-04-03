@@ -143,7 +143,7 @@ const Checkout = () => {
                   <FormItem>
                     <FormLabel>Номер телефона</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type='tel' />
                     </FormControl>
                     <FormDescription>
                       Введите номер в международном формате
