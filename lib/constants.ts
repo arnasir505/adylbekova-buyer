@@ -7,6 +7,7 @@ export const ACCEPTED_IMAGE_MIME_TYPES = [
   'image/png',
   'image/webp',
 ];
+export const ORDER_STATUS = ['pending', 'processing', 'completed', 'canceled'];
 export const MENU_ITEMS = [
   {
     label: 'Бренд',

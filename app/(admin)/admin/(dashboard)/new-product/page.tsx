@@ -207,8 +207,9 @@ const NewProduct = () => {
                   name='sizes'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Размер</FormLabel>
+                      <FormLabel htmlFor='new-product-size'>Размер</FormLabel>
                       <MultiSelect
+                        id='new-product-size'
                         options={sizesList}
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
@@ -225,8 +226,9 @@ const NewProduct = () => {
                   name='colors'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Цвет</FormLabel>
+                      <FormLabel htmlFor='new-product-color'>Цвет</FormLabel>
                       <MultiSelect
+                        id='new-product-color'
                         options={colorsList}
                         value={field.value}
                         onValueChange={(value) => field.onChange(value)}
@@ -244,12 +246,15 @@ const NewProduct = () => {
                     name='brand'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Бренд</FormLabel>
+                        <FormLabel htmlFor='new-product-brand'>Бренд</FormLabel>
                         <Select
                           value={field.value}
                           onValueChange={field.onChange}
                         >
-                          <SelectTrigger className='w-full'>
+                          <SelectTrigger
+                            id='new-product-brand'
+                            className='w-full'
+                          >
                             <SelectValue placeholder='Выберите бренд' />
                           </SelectTrigger>
                           <SelectContent>
@@ -271,12 +276,17 @@ const NewProduct = () => {
                     name='category'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Категория</FormLabel>
+                        <FormLabel htmlFor='new-product-category'>
+                          Категория
+                        </FormLabel>
                         <Select
                           value={field.value}
                           onValueChange={field.onChange}
                         >
-                          <SelectTrigger className='w-full'>
+                          <SelectTrigger
+                            id='new-product-category'
+                            className='w-full'
+                          >
                             <SelectValue placeholder='Выберите категорию' />
                           </SelectTrigger>
                           <SelectContent>

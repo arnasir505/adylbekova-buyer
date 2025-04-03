@@ -209,13 +209,11 @@ export const api = createApi({
         label: string;
       }
     >({
-      query: (category) => {
-        return {
-          url: '/categories',
-          method: 'POST',
-          body: category,
-        };
-      },
+      query: (category) => ({
+        url: '/categories',
+        method: 'POST',
+        body: category,
+      }),
     }),
     createSize: builder.mutation<
       Size,
@@ -223,13 +221,11 @@ export const api = createApi({
         value: string;
       }
     >({
-      query: (size) => {
-        return {
-          url: '/sizes',
-          method: 'POST',
-          body: size,
-        };
-      },
+      query: (size) => ({
+        url: '/sizes',
+        method: 'POST',
+        body: size,
+      }),
     }),
     createColor: builder.mutation<
       Color,
@@ -238,31 +234,27 @@ export const api = createApi({
         hex: string;
       }
     >({
-      query: (color) => {
-        return {
-          url: '/colors',
-          method: 'POST',
-          body: color,
-        };
-      },
+      query: (color) => ({
+        url: '/colors',
+        method: 'POST',
+        body: color,
+      }),
     }),
     createUser: builder.mutation<
       User,
       { name: string; email: string; password: string; phone: string }
     >({
-      query: (user) => {
-        return { url: '/users/register', method: 'POST', body: user };
-      },
+      query: (user) => ({ url: '/users/register', method: 'POST', body: user }),
     }),
     createOrder: builder.mutation<Order, OrderFields>({
-      query: (orderFields) => {
-        return { url: '/orders', method: 'POST', body: orderFields };
-      },
+      query: (orderFields) => ({
+        url: '/orders',
+        method: 'POST',
+        body: orderFields,
+      }),
     }),
     toggleBanUser: builder.mutation<User, string>({
-      query: (id) => {
-        return { url: `/users/${id}`, method: 'PATCH' };
-      },
+      query: (id) => ({ url: `/users/${id}`, method: 'PATCH' }),
     }),
     updateProduct: builder.mutation<Product, ProductFieldsWithID>({
       query: (product) => {
@@ -299,9 +291,7 @@ export const api = createApi({
       },
     }),
     toggleArchiveProduct: builder.mutation<Product, string>({
-      query: (id) => {
-        return { url: `/products/${id}`, method: 'PATCH' };
-      },
+      query: (id) => ({ url: `/products/${id}`, method: 'PATCH' }),
     }),
     updateBrand: builder.mutation<
       Brand,
@@ -336,13 +326,11 @@ export const api = createApi({
         label: string;
       }
     >({
-      query: (category) => {
-        return {
-          url: `/categories/${category.id}`,
-          method: 'PUT',
-          body: category,
-        };
-      },
+      query: (category) => ({
+        url: `/categories/${category.id}`,
+        method: 'PUT',
+        body: category,
+      }),
     }),
     updateSize: builder.mutation<
       Size,
@@ -351,13 +339,11 @@ export const api = createApi({
         value: string;
       }
     >({
-      query: (size) => {
-        return {
-          url: `/sizes/${size.id}`,
-          method: 'PUT',
-          body: size,
-        };
-      },
+      query: (size) => ({
+        url: `/sizes/${size.id}`,
+        method: 'PUT',
+        body: size,
+      }),
     }),
     updateColor: builder.mutation<
       Color,
@@ -367,12 +353,17 @@ export const api = createApi({
         hex: string;
       }
     >({
-      query: (color) => {
-        return {
-          url: `/colors/${color.id}`,
-          method: 'PUT',
-          body: color,
-        };
+      query: (color) => ({
+        url: `/colors/${color.id}`,
+        method: 'PUT',
+        body: color,
+      }),
+    }),
+    updateOrderStatus: builder.mutation<Order, { id: string; status: string }>({
+      query: ({ id, status }) => {
+        const params = new URLSearchParams();
+        if (status) params.append('status', String(status));
+        return { url: `/orders/${id}?${params.toString()}`, method: 'PATCH' };
       },
     }),
   }),
@@ -403,4 +394,5 @@ export const {
   useUpdateCategoryMutation,
   useUpdateSizeMutation,
   useUpdateColorMutation,
+  useUpdateOrderStatusMutation,
 } = api;

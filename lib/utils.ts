@@ -24,14 +24,10 @@ export const translateOrderStatus: (status: Order['status']) => string = (
   switch (status) {
     case 'pending':
       return 'В ожидании';
-    case 'paid':
-      return 'Оплачено';
     case 'processing':
       return 'В обработке';
     case 'completed':
       return 'Завершен';
-    case 'failed':
-      return 'Ошибка';
     case 'canceled':
       return 'Отменен';
     default:

@@ -15,10 +15,34 @@ import {
 import { Order } from '@/types/order';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { translateOrderStatus } from '@/lib/utils';
+import { cn, translateOrderStatus } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { Label } from './ui/label';
+import { ORDER_STATUS } from '@/lib/constants';
+import { useUpdateOrderStatusMutation } from '@/store/api';
+import { toast } from 'sonner';
 
 export function OrderTableCellViewer({ item }: { item: Order }) {
   const isMobile = useIsMobile();
+  const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
+
+  const handleValueChange = async (value: string) => {
+    try {
+      const response = await updateOrderStatus({
+        id: item._id,
+        status: value,
+      }).unwrap();
+      toast.success(`Заказ №${response.orderNumber} обновлен`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
@@ -67,7 +91,7 @@ export function OrderTableCellViewer({ item }: { item: Order }) {
                     <span className='text-sm text-gray-500'>
                       {' '}
                       ({prod.size.value}, {prod.color.name})
-                    </span>
+                    </span>{' '}
                     — <span className='font-semibold'>{prod.quantity} шт.</span>
                   </li>
                 ))}
@@ -76,15 +100,36 @@ export function OrderTableCellViewer({ item }: { item: Order }) {
 
             <p className='text-gray-700'>
               Статус:{' '}
-              <span className='font-medium text-blue-600'>
+              <span
+                className={cn(
+                  'font-medium',
+                  item.status === 'pending' && 'text-blue-700',
+                  item.status === 'completed' && 'text-green-700',
+                  item.status === 'processing' && 'text-yellow-600',
+                  item.status === 'canceled' && 'text-red-700'
+                )}
+              >
                 {translateOrderStatus(item.status)}
               </span>
             </p>
 
-            <div className='flex gap-2 mt-3'>
-              <Button>Подтвердить</Button>
-              <Button variant='destructive'>Отменить</Button>
-            </div>
+            <Label htmlFor='order-change-status'>Изменить статус:</Label>
+            <Select
+              defaultValue={item.status}
+              onValueChange={handleValueChange}
+              disabled={isLoading}
+            >
+              <SelectTrigger className='w-[180px]' id='order-change-status'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ORDER_STATUS.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {translateOrderStatus(status as Order['status'])}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DrawerFooter>

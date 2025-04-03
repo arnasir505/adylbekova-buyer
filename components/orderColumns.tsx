@@ -2,7 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { Order } from '@/types/order';
 import { OrderTableCellViewer } from './order-table-cell-viewer';
-import { translateOrderStatus } from '@/lib/utils';
+import { cn, translateOrderStatus } from '@/lib/utils';
 import { Badge } from './ui/badge';
 
 export const orderColumns: ColumnDef<Order>[] = [
@@ -63,11 +63,23 @@ export const orderColumns: ColumnDef<Order>[] = [
   {
     accessorKey: 'status',
     header: 'Статус',
-    cell: ({ row }) => (
-      <Badge variant='outline' className='max-w-ms text-wrap'>
-        {translateOrderStatus(row.original.status)}
-      </Badge>
-    ),
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <Badge
+          variant='outline'
+          className={cn(
+            'max-w-ms text-wrap',
+            status === 'pending' && 'text-blue-700',
+            status === 'completed' && 'text-green-700',
+            status === 'processing' && 'text-yellow-600',
+            status === 'canceled' && 'text-red-700'
+          )}
+        >
+          {translateOrderStatus(status)}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'createdAt',

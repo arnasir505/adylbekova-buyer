@@ -18,10 +18,8 @@ export interface Order {
   totalItems: number;
   status:
     | 'pending'
-    | 'paid'
     | 'processing'
     | 'completed'
-    | 'failed'
     | 'canceled';
   createdAt?: Date;
   updatedAt?: Date;
