@@ -9,7 +9,7 @@ const ConfirmationPage = () => {
   const orderNumber = params.get('orderNumber');
 
   return (
-    <div className='flex flex-col items-center justify-center my-20 p-5'>
+    <div className='flex flex-col my-20 p-5 w-full max-w-sm mx-auto'>
       <h1 className='text-3xl font-bold'>Спасибо за ваш заказ!</h1>
       <p className='text-lg mt-3'>
         Менеджер свяжется с вами в ближайшее время.

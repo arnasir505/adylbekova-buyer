@@ -17,6 +17,7 @@ import { useToggleArchiveProductMutation } from '@/store/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { FC } from 'react';
+import { cn } from '@/lib/utils';
 
 const ProductActions: FC<{ item: Product }> = ({ item }) => {
   const [toggleArchiveProduct, { isLoading }] =
@@ -102,8 +103,11 @@ export const productColumns: ColumnDef<Product>[] = [
     header: 'Статус',
     cell: ({ row }) => (
       <Badge
-        variant={row.original.isAvailable ? 'outline' : 'destructive'}
-        className='capitalize'
+        variant='outline'
+        className={cn(
+          'capitalize',
+          row.original.isAvailable ? 'text-green-700' : 'text-red-700'
+        )}
       >
         {row.original.isAvailable ? 'активен' : 'в архиве'}
       </Badge>

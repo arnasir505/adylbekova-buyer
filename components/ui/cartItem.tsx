@@ -91,7 +91,7 @@ export const CartItem: FC<Props> = ({ item, variant }) => {
           <div className='flex items-center justify-between mt-3 flex-wrap gap-4'>
             <div className='flex'>
               <button
-                className='cursor-pointer px-1 border hover:bg-neutral-300 transition-all'
+                className='cursor-pointer px-1 border hover:bg-neutral-300 active:bg-neutral-300'
                 onClick={() =>
                   dispatch(
                     minusOneFromCart({
@@ -111,7 +111,7 @@ export const CartItem: FC<Props> = ({ item, variant }) => {
                 onChange={(e) => handleChange(e, item)}
               />
               <button
-                className='cursor-pointer px-1 border hover:bg-neutral-300 transition-all'
+                className='cursor-pointer px-1 border hover:bg-neutral-300 active:bg-neutral-300'
                 onClick={() =>
                   dispatch(
                     plusOneToCart({
