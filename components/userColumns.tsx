@@ -45,7 +45,7 @@ const UserActions: FC<{ item: User }> = ({ item }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-32'>
         <DropdownMenuItem
-          variant='destructive'
+          variant={item.isBanned ? 'default' : 'destructive'}
           onClick={toggle}
           disabled={isLoading}
         >
@@ -97,7 +97,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: 'Статус',
     cell: ({ row }) =>
       row.original.isBanned && (
-        <Badge variant='destructive' className='capitalize'>
+        <Badge variant='outline' className='capitalize text-red-700'>
           Заблокирован
         </Badge>
       ),
@@ -111,6 +111,7 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <UserActions item={row.original} />,
+    cell: ({ row }) =>
+      row.original.role === 'manager' && <UserActions item={row.original} />,
   },
 ];
