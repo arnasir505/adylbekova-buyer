@@ -25,18 +25,42 @@ import {
 } from './ui/select';
 import { Label } from './ui/label';
 import { ORDER_STATUS } from '@/lib/constants';
-import { useUpdateOrderStatusMutation } from '@/store/api';
+import {
+  useUpdateOrderNotesMutation,
+  useUpdateOrderStatusMutation,
+} from '@/store/api';
 import { toast } from 'sonner';
+import { FormEvent, useState } from 'react';
+import { Textarea } from './ui/textarea';
+import { Loader2 } from 'lucide-react';
 
 export function OrderTableCellViewer({ item }: { item: Order }) {
   const isMobile = useIsMobile();
-  const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
+  const [updateOrderStatus, { isLoading: isOrderStatusLoading }] =
+    useUpdateOrderStatusMutation();
+  const [updateOrderNotes, { isLoading: isOrderNotesLoading }] =
+    useUpdateOrderNotesMutation();
+  const [notes, setNotes] = useState(item.notes || '');
 
   const handleValueChange = async (value: string) => {
     try {
       const response = await updateOrderStatus({
         id: item._id,
         status: value,
+      }).unwrap();
+      toast.success(`Заказ №${response.orderNumber} обновлен`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onNotesFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (notes.trim() === item.notes?.trim()) return;
+    try {
+      const response = await updateOrderNotes({
+        id: item._id,
+        notes,
       }).unwrap();
       toast.success(`Заказ №${response.orderNumber} обновлен`);
     } catch (e) {
@@ -117,7 +141,7 @@ export function OrderTableCellViewer({ item }: { item: Order }) {
             <Select
               defaultValue={item.status}
               onValueChange={handleValueChange}
-              disabled={isLoading}
+              disabled={isOrderStatusLoading}
             >
               <SelectTrigger className='w-[180px]' id='order-change-status'>
                 <SelectValue />
@@ -130,6 +154,25 @@ export function OrderTableCellViewer({ item }: { item: Order }) {
                 ))}
               </SelectContent>
             </Select>
+            <form onSubmit={onNotesFormSubmit} className='space-y-3'>
+              <Label htmlFor='order-notes'>Заметки:</Label>
+              <Textarea
+                id='order-notes'
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+              />
+              <Button
+                type='submit'
+                className='rounded-lg'
+                disabled={isOrderNotesLoading}
+              >
+                {isOrderNotesLoading ? (
+                  <Loader2 className='animate-spin' />
+                ) : (
+                  'Сохранить'
+                )}
+              </Button>
+            </form>
           </div>
         </div>
         <DrawerFooter>

@@ -363,8 +363,18 @@ export const api = createApi({
       query: ({ id, status }) => {
         const params = new URLSearchParams();
         if (status) params.append('status', String(status));
-        return { url: `/orders/${id}?${params.toString()}`, method: 'PATCH' };
+        return {
+          url: `/orders/status/${id}?${params.toString()}`,
+          method: 'PATCH',
+        };
       },
+    }),
+    updateOrderNotes: builder.mutation<Order, { id: string; notes: string }>({
+      query: ({ id, notes }) => ({
+        url: `/orders/notes/${id}`,
+        method: 'PATCH',
+        body: { notes },
+      }),
     }),
   }),
 });
@@ -395,4 +405,5 @@ export const {
   useUpdateSizeMutation,
   useUpdateColorMutation,
   useUpdateOrderStatusMutation,
+  useUpdateOrderNotesMutation,
 } = api;
