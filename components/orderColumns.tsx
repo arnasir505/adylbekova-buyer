@@ -4,6 +4,8 @@ import { Order } from '@/types/order';
 import { OrderTableCellViewer } from './order-table-cell-viewer';
 import { cn, translateOrderStatus } from '@/lib/utils';
 import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { ArrowUpDown } from 'lucide-react';
 
 export const orderColumns: ColumnDef<Order>[] = [
   {
@@ -12,7 +14,7 @@ export const orderColumns: ColumnDef<Order>[] = [
     cell: ({ row }) => <OrderTableCellViewer item={row.original} />,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'firstName',
     header: 'Имя',
     cell: ({ row }) => (
       <div className='max-w-ms text-wrap'>{row.original.firstName}</div>
@@ -83,7 +85,17 @@ export const orderColumns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: 'Дата',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Дата
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
       <div className='max-w-ms text-wrap'>
         {dayjs(row.original.createdAt).format('DD.MM.YYYY')}

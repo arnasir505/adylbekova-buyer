@@ -13,15 +13,20 @@ import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { ProductTableCellViewer } from '@/components/product-table-cell-viewer';
-import { useToggleArchiveProductMutation } from '@/store/api';
+import {
+  useDeleteProductMutation,
+  useToggleArchiveProductMutation,
+} from '@/store/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { FC } from 'react';
 import { cn } from '@/lib/utils';
 
 const ProductActions: FC<{ item: Product }> = ({ item }) => {
-  const [toggleArchiveProduct, { isLoading }] =
+  const [toggleArchiveProduct, { isLoading: isToggleLoading }] =
     useToggleArchiveProductMutation();
+  const [deleteProduct, { isLoading: isDeleteLoading }] =
+    useDeleteProductMutation();
 
   const toggle = async () => {
     try {
@@ -31,6 +36,19 @@ const ProductActions: FC<{ item: Product }> = ({ item }) => {
           ? `Товар ${item.name} снова доступен`
           : `Товар ${item.name} помещен в архив`
       );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const confirmDelete = confirm(
+        `Удалить товар ${item.name}? Это действие безвозвратно.`
+      );
+      if (!confirmDelete) return;
+      const response = await deleteProduct(item._id).unwrap();
+      toast.success(response.message);
     } catch (e) {
       console.log(e);
     }
@@ -49,8 +67,8 @@ const ProductActions: FC<{ item: Product }> = ({ item }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-32'>
-        <DropdownMenuItem onClick={toggle} disabled={isLoading}>
-          {isLoading ? (
+        <DropdownMenuItem onClick={toggle} disabled={isToggleLoading}>
+          {isToggleLoading ? (
             <Loader2 className='animate-spin' />
           ) : item.isAvailable ? (
             'В архив'
@@ -59,7 +77,13 @@ const ProductActions: FC<{ item: Product }> = ({ item }) => {
           )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant='destructive'>Удалить</DropdownMenuItem>
+        <DropdownMenuItem
+          variant='destructive'
+          onClick={handleDelete}
+          disabled={isDeleteLoading}
+        >
+          {isDeleteLoading ? <Loader2 className='animate-spin' /> : 'Удалить'}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

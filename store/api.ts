@@ -376,6 +376,9 @@ export const api = createApi({
         body: { notes },
       }),
     }),
+    deleteProduct: builder.mutation<{ message: string }, string>({
+      query: (id) => ({ url: `/products/${id}`, method: 'DELETE' }),
+    }),
   }),
 });
 
@@ -406,4 +409,5 @@ export const {
   useUpdateColorMutation,
   useUpdateOrderStatusMutation,
   useUpdateOrderNotesMutation,
+  useDeleteProductMutation,
 } = api;

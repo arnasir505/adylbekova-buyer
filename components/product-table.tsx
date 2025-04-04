@@ -6,12 +6,16 @@ import {
   useReactTable,
   getCoreRowModel,
   getPaginationRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from '@tanstack/react-table';
 import { productColumns } from './productColumns';
 import DataTable from '@/components/data-table';
+import { Input } from './ui/input';
 
 const ProductsTable: FC<{ isManager: boolean }> = ({ isManager }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const { data: productsData, refetch, isLoading } = useGetProductsQuery({});
 
   const filteredColumns = productColumns.filter((col) => {
@@ -25,16 +29,36 @@ const ProductsTable: FC<{ isManager: boolean }> = ({ isManager }) => {
   const table = useReactTable({
     data: productsData?.products || [],
     columns: filteredColumns,
-    state: { pagination },
+    onPaginationChange: setPagination,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: { pagination, columnFilters },
   });
 
   return isLoading ? (
     <div>Загрузка таблицы товаров...</div>
   ) : (
-    <DataTable table={table} columns={filteredColumns} refetch={refetch} />
+    <>
+      <div className='flex items-center pb-4'>
+        <Input
+          placeholder='Поиск по названию...'
+          value={
+            (table
+              .getColumn(isManager ? 'manager' : 'admin')
+              ?.getFilterValue() as string) ?? ''
+          }
+          onChange={(event) =>
+            table
+              .getColumn(isManager ? 'manager' : 'admin')
+              ?.setFilterValue(event.target.value)
+          }
+          className='max-w-sm'
+        />
+      </div>
+      <DataTable table={table} columns={filteredColumns} refetch={refetch} />
+    </>
   );
 };
 
