@@ -93,7 +93,7 @@ export const userFormSchema = z.object({
     .string()
     .min(1, { message: 'Введите email' })
     .email('Некорректный email'),
-  password: z.string().min(1, { message: 'Введите пароль' }),
+  password: z.string().min(5, { message: 'Введите пароль (минимум 5 символов)' }),
   phone: z.string().min(1, { message: 'Введите номер телефона' }),
 });
 

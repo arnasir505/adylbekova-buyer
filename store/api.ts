@@ -379,6 +379,23 @@ export const api = createApi({
     deleteProduct: builder.mutation<{ message: string }, string>({
       query: (id) => ({ url: `/products/${id}`, method: 'DELETE' }),
     }),
+    forgotPassword: builder.mutation<{ message: string }, { email: string }>({
+      query: (body) => ({
+        url: '/users/forgot-password',
+        method: 'POST',
+        body,
+      }),
+    }),
+    resetPassword: builder.mutation<
+      { message: string },
+      { token: string; newPassword: string }
+    >({
+      query: (body) => ({
+        url: '/users/reset-password',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -410,4 +427,6 @@ export const {
   useUpdateOrderStatusMutation,
   useUpdateOrderNotesMutation,
   useDeleteProductMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = api;

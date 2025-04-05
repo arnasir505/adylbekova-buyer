@@ -27,6 +27,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { loginFormSchema as formSchema } from '@/lib/zod-schemas';
 import { GlobalError } from '@/types/errors';
+import Link from 'next/link';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -96,12 +97,12 @@ const LoginPage = () => {
                       <FormItem>
                         <div className='flex items-center'>
                           <FormLabel htmlFor='password'>Пароль</FormLabel>
-                          <a
-                            href='#'
+                          <Link
+                            href='/admin/login/forgot-password'
                             className='ml-auto inline-block text-sm underline-offset-4 hover:underline'
                           >
                             Забыли пароль?
-                          </a>
+                          </Link>
                         </div>
                         <FormControl>
                           <Input
