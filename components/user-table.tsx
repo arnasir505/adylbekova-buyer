@@ -16,9 +16,9 @@ const UsersTable: FC<{ isManager: boolean }> = ({ isManager }) => {
 
   const filteredColumns = userColumns.filter((col) => {
     if (isManager) {
-      return col.id !== 'actions';
+      return col.id !== 'actions' && col.id !== 'admin';
     } else {
-      return true;
+      return col.id !== 'manager';
     }
   });
 

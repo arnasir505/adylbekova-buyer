@@ -11,9 +11,20 @@ import dayjs from 'dayjs';
 import { User } from '@/types/user';
 import { Badge } from './ui/badge';
 import { FC } from 'react';
-import { useToggleBanUserMutation } from '@/store/api';
+import {
+  useChangeUserRoleMutation,
+  useToggleBanUserMutation,
+} from '@/store/api';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { GlobalError } from '@/types/errors';
 
 const UserActions: FC<{ item: User }> = ({ item }) => {
   const [toggleBanUser, { isLoading }] = useToggleBanUserMutation();
@@ -23,11 +34,12 @@ const UserActions: FC<{ item: User }> = ({ item }) => {
       const user = await toggleBanUser(item._id).unwrap();
       toast.success(
         user.isBanned
-          ? `Менеджер ${item.name} заблокирован`
-          : `Менеджер ${item.name} разблокирован`
+          ? `Менеджер ${user.name} заблокирован`
+          : `Менеджер ${user.name} разблокирован`
       );
     } catch (e) {
-      console.log(e);
+      const error = e as GlobalError;
+      toast.error(error.data.error);
     }
   };
 
@@ -62,6 +74,43 @@ const UserActions: FC<{ item: User }> = ({ item }) => {
   );
 };
 
+const RoleSelect: FC<{ item: User }> = ({ item }) => {
+  const [changeRole, { isLoading }] = useChangeUserRoleMutation();
+
+  const handleChange = async (value: 'admin' | 'manager') => {
+    try {
+      const user = await changeRole({
+        userId: item._id,
+        newRole: value,
+      }).unwrap();
+      toast.success(
+        user.role === 'admin'
+          ? `${user.name} назначен/а админом`
+          : `${user.name} назначен/а менеджером`
+      );
+    } catch (e) {
+      const error = e as GlobalError;
+      toast.error(error.data.error);
+    }
+  };
+  return (
+    <Select
+      value={item.role}
+      defaultValue={item.role}
+      onValueChange={handleChange}
+      disabled={isLoading}
+    >
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value='admin'>Админ</SelectItem>
+        <SelectItem value='manager'>Менеджер</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
+
 export const userColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'number',
@@ -84,6 +133,7 @@ export const userColumns: ColumnDef<User>[] = [
     cell: ({ row }) => <div>{row.original.phone}</div>,
   },
   {
+    id: 'manager',
     accessorKey: 'role',
     header: 'Роль',
     cell: ({ row }) => (
@@ -91,6 +141,12 @@ export const userColumns: ColumnDef<User>[] = [
         {row.original.role === 'manager' ? 'Менеджер' : 'Админ'}
       </Badge>
     ),
+  },
+  {
+    id: 'admin',
+    accessorKey: 'role',
+    header: 'Роль',
+    cell: ({ row }) => <RoleSelect item={row.original} />,
   },
   {
     accessorKey: 'status',

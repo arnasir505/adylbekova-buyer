@@ -254,7 +254,17 @@ export const api = createApi({
       }),
     }),
     toggleBanUser: builder.mutation<User, string>({
-      query: (id) => ({ url: `/users/${id}`, method: 'PATCH' }),
+      query: (id) => ({ url: `/users/toggle-ban/${id}`, method: 'PATCH' }),
+    }),
+    changeUserRole: builder.mutation<
+      User,
+      { userId: string; newRole: 'admin' | 'manager' }
+    >({
+      query: (arg) => ({
+        url: `/users/change-role/${arg.userId}`,
+        method: 'PATCH',
+        body: { newRole: arg.newRole },
+      }),
     }),
     updateProduct: builder.mutation<Product, ProductFieldsWithID>({
       query: (product) => {
@@ -416,6 +426,7 @@ export const {
   useCreateUserMutation,
   useCreateOrderMutation,
   useToggleBanUserMutation,
+  useChangeUserRoleMutation,
   useLoginMutation,
   useLogoutMutation,
   useUpdateProductMutation,
