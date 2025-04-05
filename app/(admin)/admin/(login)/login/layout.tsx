@@ -1,6 +1,7 @@
 import '@/app/globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import ReduxProvider from '@/providers/ReduxProvider';
+import { Suspense } from 'react';
 
 export default function DashboardLayout({
   children,
@@ -11,8 +12,10 @@ export default function DashboardLayout({
     <ReduxProvider>
       <html lang='ru'>
         <body className='flex min-h-screen w-full flex-col'>
-          <main>{children}</main>
-          <Toaster position='top-center' richColors />
+          <Suspense>
+            <main>{children}</main>
+            <Toaster position='top-center' richColors />
+          </Suspense>
         </body>
       </html>
     </ReduxProvider>
