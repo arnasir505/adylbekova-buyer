@@ -54,7 +54,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (product && selectedSize && selectedColor) {
       setLoading(true);
-      setTimeout(() => {
+      const timeOut = setTimeout(() => {
         dispatch(
           addToCart({ product, size: selectedSize, color: selectedColor })
         );
@@ -65,6 +65,8 @@ const ProductDetails = () => {
         setLoading(false);
         toast.success('Добавлено в корзину', { duration: 2000 });
       }, 500);
+
+      return () => clearTimeout(timeOut);
     }
   }, [selectedSize, selectedColor, dispatch, product]);
 
