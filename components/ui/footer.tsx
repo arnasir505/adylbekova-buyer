@@ -15,7 +15,7 @@ const Footer = () => {
               <Icon name='tiktok' size='lg' color={palette.neutral_333} />
             </Link>
             <Link
-              href='https://www.instagram.com/joni_adylbek?igsh=aG1lb284dTNkMDNr'
+              href='https://www.instagram.com/aizhan_premium?igsh=eWZpc2k0dHc2emlp'
               target='blank'
             >
               <Icon name='instagram' size='lg' color={palette.neutral_333} />
