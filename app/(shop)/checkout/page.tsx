@@ -71,7 +71,14 @@ const Checkout = () => {
         })
       );
       dispatch(clearCart());
-      router.push(`/checkout/confirmation?orderNumber=${response.orderNumber}`);
+      // The backend picks which shop WhatsApp number gets this order.
+      const confirmation = new URLSearchParams({
+        orderNumber: response.orderNumber,
+      });
+      if (response.whatsappNumber) {
+        confirmation.set('wa', response.whatsappNumber);
+      }
+      router.push(`/checkout/confirmation?${confirmation}`);
     } catch (e) {
       const error = e as GlobalError;
       form.setError('orderDetails', { message: error.data.error });
