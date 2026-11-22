@@ -55,13 +55,23 @@ export const api = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<
       ProductsResponse,
-      { page?: number; limit?: number; search?: string }
+      {
+        brand?: string;
+        category?: string;
+        page?: number;
+        limit?: number;
+        search?: string;
+        sort?: string;
+      }
     >({
-      query: ({ page, limit, search }) => {
+      query: ({ brand, category, page, limit, search, sort }) => {
         const params = new URLSearchParams();
+        if (brand) params.append('brand', String(brand));
+        if (category) params.append('category', String(category));
         if (page) params.append('page', String(page));
         if (limit) params.append('limit', String(limit));
         if (search) params.append('q', String(search));
+        if (sort) params.append('sort', String(sort));
         return `/products?${params.toString()}`;
       },
       transformResponse: (response: ProductsResponse) => ({
