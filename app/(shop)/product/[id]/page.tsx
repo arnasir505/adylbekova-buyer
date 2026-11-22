@@ -35,6 +35,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Size } from '@/types/sizes';
 import { Color } from '@/types/colors';
+import { useTapToOpen } from '@/hooks/use-tap-to-open';
 
 const ProductDetails = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const tapToOpen = useTapToOpen(isOpen, setIsOpen);
 
   useEffect(() => {
     if (product && selectedSize && selectedColor) {
@@ -150,6 +152,7 @@ const ProductDetails = () => {
           <DropdownMenuTrigger
             disabled={loading || !product?.isAvailable}
             asChild
+            {...tapToOpen}
           >
             <Button className='w-full' size='xl'>
               {loading ? (

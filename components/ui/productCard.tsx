@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { Button } from './button';
 import { Size } from '@/types/sizes';
 import { Color } from '@/types/colors';
+import { useTapToOpen } from '@/hooks/use-tap-to-open';
 
 interface Props {
   product: Product;
@@ -36,6 +37,7 @@ const ProductCard: FC<Props> = ({ product }) => {
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const tapToOpen = useTapToOpen(isOpen, setIsOpen);
 
   useEffect(() => {
     if (selectedSize && selectedColor) {
@@ -84,7 +86,11 @@ const ProductCard: FC<Props> = ({ product }) => {
         </p>
       </Link>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild disabled={loading || !product.isAvailable}>
+        <DropdownMenuTrigger
+          asChild
+          disabled={loading || !product.isAvailable}
+          {...tapToOpen}
+        >
           <Button className='w-full'>
             {loading ? (
               <>

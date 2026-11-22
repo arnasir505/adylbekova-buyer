@@ -10,3 +10,9 @@ export interface CategoryResponse {
   categories: Category[];
   totalPages: number;
 }
+
+export interface MenuItem {
+  label: string;
+  value: 'brand' | 'category';
+  children: { label: string; value: string }[];
+}

@@ -23,6 +23,7 @@ import { useCreateOrderMutation } from '@/store/api';
 import { GlobalError } from '@/types/errors';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { buildOrderMessage, saveOrderMessage } from '@/lib/whatsapp';
 
 const Checkout = () => {
   const router = useRouter();
@@ -56,6 +57,17 @@ const Checkout = () => {
         products,
       };
       const response = await createOrder(orderFields).unwrap();
+      saveOrderMessage(
+        response.orderNumber,
+        buildOrderMessage({
+          orderNumber: response.orderNumber,
+          items: cart,
+          totalPrice: response.totalPrice,
+          totalItems: response.totalItems,
+          customer: values,
+          siteOrigin: window.location.origin,
+        })
+      );
       dispatch(clearCart());
       router.push(`/checkout/confirmation?orderNumber=${response.orderNumber}`);
     } catch (e) {
