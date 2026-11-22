@@ -12,6 +12,7 @@ import { StarCheck } from '../icons/StarCheck';
 import { StartDuoTone } from '../icons/StartDuoTone';
 import { Telegram } from '../icons/Telegram';
 import { Tiktok } from '../icons/Tiktok';
+import { Whatsapp } from '../icons/Whatsapp';
 
 export const iconMap = {
   menu: Menu,
@@ -28,4 +29,5 @@ export const iconMap = {
   starDuoTone: StartDuoTone,
   arrowUpRight: ArrowUpRight,
   telegram: Telegram,
+  whatsapp: Whatsapp
 } as const;

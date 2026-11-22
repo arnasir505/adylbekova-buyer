@@ -3,10 +3,30 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Icon } from '@/iconpack';
+import {
+  SHOP_WHATSAPP_NUMBER,
+  buildWhatsAppUrl,
+  loadOrderMessage,
+} from '@/lib/whatsapp';
 
 const ConfirmationPage = () => {
   const params = useSearchParams();
   const orderNumber = params.get('orderNumber');
+  const [message, setMessage] = useState<string | null>(null);
+
+  // sessionStorage is only available in the browser, so read it after mount.
+  useEffect(() => {
+    if (!orderNumber) return;
+    setMessage(
+      loadOrderMessage(orderNumber) ??
+        `Здравствуйте! Я оформил(а) заказ №${orderNumber} на сайте.`
+    );
+  }, [orderNumber]);
+
+  const whatsAppUrl =
+    SHOP_WHATSAPP_NUMBER && message ? buildWhatsAppUrl(message) : null;
 
   return (
     <div className='flex flex-col my-20 p-5 w-full max-w-sm mx-auto'>
@@ -19,7 +39,26 @@ const ConfirmationPage = () => {
           Номер заказа: <strong>{orderNumber}</strong>
         </p>
       )}
-      <Button className='mt-8' asChild>
+
+      {whatsAppUrl && (
+        <>
+          <p className='mt-6 text-base'>
+            Чтобы ускорить обработку, отправьте заказ нам в WhatsApp
+          </p>
+          <Button className='mt-4 bg-[#25D366] hover:bg-[#1ebe5a]' asChild>
+            <a href={whatsAppUrl} target='_blank' rel='noopener noreferrer'>
+              <Icon name='whatsapp' size={20} color='white' />
+              Отправить заказ в WhatsApp
+            </a>
+          </Button>
+        </>
+      )}
+
+      <Button
+        className='mt-4'
+        variant={whatsAppUrl ? 'outline' : 'default'}
+        asChild
+      >
         <Link href='/products'>Вернуться на главную</Link>
       </Button>
     </div>
