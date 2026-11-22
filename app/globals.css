@@ -81,7 +81,7 @@
   background: linear-gradient(180deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%)
       top,
     linear-gradient(0deg, #1b1a19 0%, rgba(115, 115, 115, 0) 100%) bottom,
-    url('/images/welcome-page-1.jpg') center no-repeat;
+    url('/images/welcome-page-1.webp') center no-repeat;
   background-size: 100% 40%, 100% 40%, cover;
   background-repeat: no-repeat;
 }
@@ -90,7 +90,7 @@
   background: linear-gradient(180deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%)
       top,
     linear-gradient(0deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%) bottom,
-    url('/images/welcome-page-2.jpg') center no-repeat;
+    url('/images/welcome-page-2.webp') center no-repeat;
   background-size: 100% 40%, 100% 40%, cover;
   background-repeat: no-repeat;
 }
@@ -99,7 +99,7 @@
   background: linear-gradient(180deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%)
       top,
     linear-gradient(0deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%) bottom,
-    url('/images/welcome-page-3.jpg') center no-repeat;
+    url('/images/welcome-page-3.webp') center no-repeat;
   background-size: 100% 40%, 100% 40%, cover;
   background-repeat: no-repeat;
 }
@@ -108,7 +108,7 @@
   background: linear-gradient(180deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%)
       top,
     linear-gradient(0deg, #1b1a19 0%, rgb(115, 115, 115, 0) 100%) bottom,
-    url('/images/welcome-page-4.jpg') center no-repeat;
+    url('/images/welcome-page-4.webp') center no-repeat;
   background-size: 100% 40%, 100% 40%, cover;
   background-repeat: no-repeat;
 }

@@ -7,23 +7,30 @@ import { Icon } from '@/iconpack';
 import { palette } from '@/lib/palette';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { VISITED_KEY } from '@/lib/constants';
 
 export default function WelcomePage() {
-  const [isFirstVisit, setIsFirstVisit] = useState<boolean | null>(null);
   const [step, setStep] = useState(1);
   const totalSteps = 4;
   const router = useRouter();
 
+  // Returning visitors carry the cookie and are redirected by middleware.ts
+  // before this page renders. Visitors from before the cookie existed only
+  // have the localStorage flag: give them the cookie and send them on.
   useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisited');
+    let hasVisited = false;
+    try {
+      hasVisited = Boolean(localStorage.getItem(VISITED_KEY));
+      localStorage.setItem(VISITED_KEY, 'true');
+    } catch {}
+    document.cookie = `${VISITED_KEY}=1; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
 
-    if (hasVisited) {
-      router.replace('/products');
-    } else {
-      localStorage.setItem('hasVisited', 'true');
-      setIsFirstVisit(true);
-    }
+    if (hasVisited) router.replace('/products');
   }, [router]);
+
+  // Each background is only requested once the step before it is on screen,
+  // instead of all four at once.
+  const bg = (n: number) => (step >= n - 1 ? `bg-welcome-${n}` : '');
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -32,8 +39,6 @@ export default function WelcomePage() {
       router.push('/products');
     }
   };
-
-  if (isFirstVisit === null) return null;
 
   return (
     <>
@@ -56,7 +61,8 @@ export default function WelcomePage() {
       </div>
       <div
         className={cn(
-          'absolute w-full z-[1003] flex flex-col items-center justify-between min-h-screen bg-welcome-2 pt-[62px] pb-[106px] cursor-pointer transition-all',
+          'absolute w-full z-[1003] flex flex-col items-center justify-between min-h-screen pt-[62px] pb-[106px] cursor-pointer transition-all',
+          bg(2),
           step === 2 ? 'opacity-100' : 'opacity-0'
         )}
         onClick={nextStep}
@@ -85,7 +91,8 @@ export default function WelcomePage() {
       </div>
       <div
         className={cn(
-          'absolute w-full z-[1002] flex flex-col items-center justify-between min-h-screen bg-welcome-3 pt-[62px] pb-[80px] cursor-pointer transition-all',
+          'absolute w-full z-[1002] flex flex-col items-center justify-between min-h-screen pt-[62px] pb-[80px] cursor-pointer transition-all',
+          bg(3),
           step === 3 ? 'opacity-100' : 'opacity-0'
         )}
         onClick={nextStep}
@@ -140,7 +147,8 @@ export default function WelcomePage() {
       </div>
       <div
         className={cn(
-          'absolute w-full z-[1001] flex flex-col items-center justify-between min-h-screen bg-welcome-4 pt-[62px] pb-[106px] transition-all',
+          'absolute w-full z-[1001] flex flex-col items-center justify-between min-h-screen pt-[62px] pb-[106px] transition-all',
+          bg(4),
           step === 4 ? 'opacity-100' : 'opacity-0'
         )}
       >
