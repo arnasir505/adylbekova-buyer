@@ -9,11 +9,14 @@ import {
   SHOP_WHATSAPP_NUMBER,
   buildWhatsAppUrl,
   loadOrderMessage,
+  normalizePhone,
 } from '@/lib/whatsapp';
 
 const ConfirmationPage = () => {
   const params = useSearchParams();
   const orderNumber = params.get('orderNumber');
+  // Number assigned to this order by the backend, else the shop default.
+  const whatsAppNumber = normalizePhone(params.get('wa')) || SHOP_WHATSAPP_NUMBER;
   const [message, setMessage] = useState<string | null>(null);
 
   // sessionStorage is only available in the browser, so read it after mount.
@@ -26,7 +29,7 @@ const ConfirmationPage = () => {
   }, [orderNumber]);
 
   const whatsAppUrl =
-    SHOP_WHATSAPP_NUMBER && message ? buildWhatsAppUrl(message) : null;
+    whatsAppNumber && message ? buildWhatsAppUrl(whatsAppNumber, message) : null;
 
   return (
     <div className='flex flex-col my-20 p-5 w-full max-w-sm mx-auto'>

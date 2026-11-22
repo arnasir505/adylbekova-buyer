@@ -5,6 +5,7 @@ export interface Order {
   _id: string;
   manager: User;
   orderNumber: string;
+  whatsappNumber?: string;
   firstName: string;
   email: string;
   country: string;

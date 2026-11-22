@@ -1,9 +1,13 @@
 import { CartItem } from '@/types/cart';
 
-// Shop number in international format, digits only (e.g. 996555123456).
-export const SHOP_WHATSAPP_NUMBER = (
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ''
-).replace(/\D/g, '');
+/** Digits only, as wa.me expects (e.g. "+996 555 12-34-56" -> "99655512345"). */
+export const normalizePhone = (value?: string | null) =>
+  (value ?? '').replace(/\D/g, '');
+
+// Fallback shop number, used when the backend does not assign one to the order.
+export const SHOP_WHATSAPP_NUMBER = normalizePhone(
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
+);
 
 const STORAGE_PREFIX = 'whatsapp-order:';
 
@@ -67,8 +71,8 @@ export const buildOrderMessage = ({
     .trim();
 };
 
-export const buildWhatsAppUrl = (message: string) =>
-  `https://wa.me/${SHOP_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+export const buildWhatsAppUrl = (phone: string, message: string) =>
+  `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
 // The message is handed from checkout to the confirmation page via
 // sessionStorage, which can be unavailable (private mode etc.) — so every
