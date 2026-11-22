@@ -55,6 +55,8 @@ const Checkout = () => {
       const orderFields: OrderFields = {
         ...values,
         products,
+        // The order number's date is taken in the customer's time zone.
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       };
       const response = await createOrder(orderFields).unwrap();
       saveOrderMessage(
