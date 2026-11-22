@@ -33,6 +33,7 @@ export interface OrderFields {
   address: string;
   phone: string;
   orderDetails?: string;
+  timeZone?: string;
   products: {
     product: string;
     quantity: number;
